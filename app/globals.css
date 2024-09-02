@@ -31,3 +31,9 @@ body {
     text-wrap: balance;
   }
 }
+
+main {
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}

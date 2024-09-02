@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 80px auto;
+}
+
+.milkCarton {
+  width: 100px; // Adjust size as needed
+  height: 200px; // Adjust size as needed
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  border: 2px solid #000;
+}
+
+.stripeTop,
+.stripeBottom {
+  width: 100%;
+  height: 20px; // Adjust size as needed
+  background-color: #007bff;
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+}

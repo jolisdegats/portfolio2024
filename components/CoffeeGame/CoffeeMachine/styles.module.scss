@@ -1,0 +1,334 @@
+@mixin unbuttonize {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  &:focus {
+    outline: unset;
+  }
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 80px auto;
+}
+
+.coffeeMachine {
+  max-width: 450px;
+  width: 100%;
+}
+/* Start The Base */
+
+.aboveBase {
+  width: 83%;
+  height: 8px;
+  background-color: #0b4a66;
+  margin: 0 auto;
+  border-radius: 7px 7px 0 0;
+}
+
+.base {
+  position: relative;
+  width: 90%;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 18px 18px 10px 10px;
+  background-color: #0e5f82;
+  overflow: hidden;
+  padding: 15px 0;
+  box-shadow: inset 10px -27px 4px #0b4a66;
+}
+
+.base > div:not(.spans) {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+  background-color: #000;
+}
+
+.spans {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  bottom: 10px;
+  text-align: center;
+}
+
+/* End The Base */
+
+/* Start Content */
+
+.content {
+  position: relative;
+  width: 80%;
+  max-width: 350px;
+  height: 200px;
+  margin: 0 auto;
+  background-color: #b2b2b2;
+  box-shadow: inset 7px 0px 0px #a5a5a5;
+}
+
+.back {
+  width: 77%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  background-color: #949494;
+  transform: translateX(-50%);
+  box-shadow: inset 6px 0px 0px #8a8a8a;
+}
+
+.muggContainer {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+}
+
+.muggContainerRelative {
+  position: relative;
+  bottom: 5px;
+  cursor: pointer;
+}
+
+.coffee {
+  z-index: 6;
+  position: absolute;
+  bottom: 5px;
+  left: -30px;
+  background-color: #793d2e;
+  width: 60px;
+  height: 75px;
+  border-radius: 0px 0px 20% 20%;
+  box-shadow: inset 7px -3px 3px #c18255;
+  transform-origin: bottom;
+}
+
+.mugg {
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #f0e3d4;
+  width: 70px;
+  height: 90px;
+  border-radius: 5px 5px 10% 10%;
+  transition: opacity 0.3s, left 1s;
+  transform: translateX(-50%);
+}
+
+.muggArm {
+  z-index: 1;
+  position: absolute;
+  left: 20px;
+  bottom: 25px;
+  width: 20px;
+  height: 30px;
+  border-radius: 50%;
+  border: 8px solid #f0e3d4;
+  transform: rotate(9deg);
+}
+
+.bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 50%;
+  opacity: 0;
+  transition: 0.7s;
+  animation: bubblesAnimation 8s infinite linear;
+}
+
+.b1 {
+  animation-delay: 3.6s !important;
+}
+
+.b2 {
+  animation-delay: 5.5s !important;
+}
+.b3 {
+  animation-delay: 7.8s !important;
+}
+
+.muggBase {
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100px;
+  height: 5px;
+  background-color: #333;
+  border-radius: 10px 10px 0 0;
+  transform: translateX(-50%);
+}
+
+.press {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.one {
+  width: 120px;
+  height: 20px;
+  background-color: #d7d7d7;
+  border-radius: 0 0 60px 60px;
+  box-shadow: inset 6px -7px 3px #c8c8c8;
+}
+
+.two {
+  width: 70px;
+  height: 18px;
+  margin: 0 auto;
+  margin-bottom: -5px;
+  background-color: #000;
+  border-radius: 0 0 50% 50%;
+}
+
+.three {
+  width: 10px;
+  height: 14px;
+  margin: 0 auto;
+  background-color: #000;
+  border-radius: 0 0 3px 3px;
+}
+
+.armContainer {
+  position: absolute;
+  top: 0;
+  right: 7px;
+  z-index: -1;
+  transform-origin: left;
+  &--active {
+    animation: pressArmAnimation 1s 2 alternate;
+  }
+}
+
+.five {
+  position: absolute;
+  top: 23px;
+  right: -20px;
+  width: 46px;
+  height: 6px;
+  background-color: #585858;
+}
+.six {
+  position: absolute;
+  top: 17px;
+  right: -68px;
+  width: 51px;
+  height: 17px;
+  background-color: #000;
+  border-radius: 40px;
+}
+
+.coffeePouring {
+  position: absolute;
+  z-index: 5;
+  left: calc(50% - 6px / 2);
+  bottom: 10px;
+  width: 6px;
+  margin: 0 auto;
+  background-color: #73372c;
+  height: 180px;
+  transition: transform 0.5s;
+
+  &--inactive {
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+
+  &--active {
+    transform: scaleY(1);
+    opacity: 1;
+    transform-origin: top;
+  }
+}
+
+/* End Content */
+
+/* Start Head */
+.head {
+  width: 88%;
+  height: 100px;
+  margin: 0 auto;
+  background-color: #e4e8e9;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: inset 10px 0px 2px #d4d4d4, inset -10px 0px 2px #d4d8d9;
+}
+
+.circle {
+  @include unbuttonize();
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 7px solid #333;
+  background-color: #a9cce2;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  box-shadow: inset 14px 0px 2px 1px #9ebed3;
+  &--active {
+    animation: circleAnimation 2s infinite linear;
+  }
+  &:hover {
+    border-color: #555;
+  }
+}
+
+.choice {
+  @include unbuttonize();
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: #c1c1c1;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0px 0px 5px #555;
+}
+
+.choice1 {
+  left: 30px;
+  &--active {
+    background-color: #ce1b1b;
+  }
+}
+.choice2 {
+  left: 60px;
+  &--active {
+    background-color: #00ad00;
+  }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    margin: 50px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 20px auto;
+  }
+}
