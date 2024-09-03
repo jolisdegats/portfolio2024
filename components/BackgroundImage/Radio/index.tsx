@@ -13,25 +13,37 @@ export const MarkerRadio = () => {
     const { state : {isRadioOn}, dispatch } = useAppContext(); 
    
     const [playRadio, {stop : stopRadio}] = useSound(radioMusicHappyChildren);
-    const [playSwitch] = useSound(radioSwitch, {volume : 0.25});
+    const [playSwitch, {stop : stopSwitch}] = useSound(radioSwitch, {volume : 0.25});
     const [playTuning, {stop : stopTuning}] = useSound(radioTuning, {volume : 0.5});
 
     useEffect(()=> {
-const turnRadioOn = () => {
-    playSwitch()
-    playTuning()
-    playRadio()
-    setTimeout(() => {
-        stopTuning()
-    }, 2000)
-}
-const turnRadioOff = () =>{
-    playSwitch()
-    stopTuning()
-    stopRadio()
-}
-    isRadioOn ? turnRadioOn() : turnRadioOff()
-    }, [isRadioOn, playRadio, stopRadio, playTuning, stopTuning, playSwitch])
+        if (isRadioOn) {
+            playSwitch();
+            playTuning();
+            playRadio();
+            setTimeout(() => {
+                stopTuning()
+            }, 2000)
+            return () => stopSwitch()
+          } else {
+            playSwitch();
+            stopTuning();
+            stopRadio();
+            return () => stopSwitch()
+          }
+//     const turnRadioOn = () => {
+//         playSwitch()
+//         playTuning()
+//         playRadio()
+       
+//     }
+// const turnRadioOff = () =>{
+//     playSwitch()
+//     stopTuning()
+//     stopRadio()
+// }
+//     isRadioOn ? turnRadioOn() : turnRadioOff()
+    }, [isRadioOn, playRadio, stopRadio, playTuning, stopTuning, playSwitch, stopSwitch])
     const shape : ShapeType= {
     onClick:() => dispatch(toggleRadio()),
     title: 'Radio',
