@@ -45,7 +45,8 @@ const seaCloudsPropsDelayed = useSpring({
   config: { duration: 500000, easing: (t) => t },
   loop: true,
 });
-return  <><image xlinkHref={sky.src}/>
+return  <>
+<image xlinkHref={sky.src}/>
 <image xlinkHref={sea.src}/>
 <AnimatedImage xlinkHref={seaclouds.src} style={seaCloudsProps} />
 <AnimatedImage xlinkHref={seaclouds.src} style={seaCloudsPropsDelayed} />

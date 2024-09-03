@@ -1,14 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-import imageUrl from '../../assets/main-background.png'
-import radioOn from '../../assets/radio-on.png'
-import phoneOn from '../../assets/phone.png'
-import lightOn from '../../assets/light.png'
-import music from '../../assets/music.mp3'
-import useSound from 'use-sound';
+import imageUrl from '@/assets/main-background.png'
 
-import Background from './Background';
+import Background from '@/components/BackgroundImage/Background';
+import {ImageRadio, MarkerRadio} from '@/components/BackgroundImage/Radio';
+import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
+import {ImageLight, MarkerLight} from '@/components/BackgroundImage/Light';
+import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
+import Modal from '@/components/Modal'
+import styles from "./styles.module.scss"
 
 interface Shape {
   href?: string;
@@ -27,59 +27,38 @@ interface Shape {
   shapes: Shape[];
 }
 
-// interface BackgroundImageProps {
-//   svgData: SvgData;
-// }
-
 
 const BackgroundImage = () => {
-const [isRadioOn, setIsRadioOn] = useState(false);
-const [isLightOn, setIsLightOn] = useState(false);
-const [isPhoneOn, setIsPhoneOn] = useState(false);
-const [play, {stop}] = useSound(music);
-
-useEffect(()=> {
-isRadioOn ? play() : stop()
-}, [isRadioOn, play, stop])
-
-
-
   const svgData : SvgData = {
     shapes: [
-      {
-        onClick: () => setIsLightOn(!isLightOn),
-        title: '',
-        type: 'polygon',
-        points: "1666.92 1003.21 1669.47 878.131 1631.18 860.262 1620.97 885.789 1585.23 865.367 1613.31 839.84 1641.39 850.051 1679.68 865.367 1674.58 1000.66 1695 1005.77 1700.1 1018.53 1631.18 1015.98 1631.18 1000.66",
-      },
-      {
-        onClick:() => setIsPhoneOn(!isPhoneOn),
-        title: '',
-        type: 'rect',
-        x:1531.6239316239316 ,
-        y:1003.2136752136752, width:86.79202279202286, height:12.763532763533021 
-      },
-      {
-        onClick:() => setIsRadioOn(!isRadioOn),
-        href: '#3',
-        title: '',
-        type: 'rect',
-        x:913.8689458689458 ,
-        y:903.6581196581196, width:155.71509971509965, height:119.97720797720797 
-      },
+      // {
+      //   onClick: () => setIsLightOn(!isLightOn),
+      //   title: '',
+      //   type: 'polygon',
+      //   points: "1666.92 1003.21 1669.47 878.131 1631.18 860.262 1620.97 885.789 1585.23 865.367 1613.31 839.84 1641.39 850.051 1679.68 865.367 1674.58 1000.66 1695 1005.77 1700.1 1018.53 1631.18 1015.98 1631.18 1000.66",
+      // },
+      // {
+      //   onClick:() => setIsPhoneOn(!isPhoneOn),
+      //   title: '',
+      //   type: 'rect',
+      //   x:1531.6239316239316 ,
+      //   y:1003.2136752136752, width:86.79202279202286, height:12.763532763533021 
+      // },
+      // {
+      //   onClick:() => setIsRadioOn(!isRadioOn),
+      //   href: '#3',
+      //   title: '',
+      //   type: 'rect',
+      //   x:913.8689458689458 ,
+      //   y:903.6581196581196, width:155.71509971509965, height:119.97720797720797 
+      // },
       {
         href: '#4',
         title: '',
         type: 'polygon',
         points: "1243.17 1018.53 1263.59 1005.77 1278.91 987.897 1281.46 1021.08 1141.06 1018.53 1125.74 993.003 1128.3 860.262 1289.12 857.709 1263.59 875.578 1243.17 985.345 1220.19 1000.66",
       },
-      {
-        href: '#1',
-        title: '',
-        type: 'rect',
-        x:1493.3333333333333 ,
-        y:957.2649572649573, width:40.84330484330485, height:43.39601139601143 
-      },
+  
       
       {
         href: '#1',
@@ -118,26 +97,39 @@ isRadioOn ? play() : stop()
     ],
   };
 
-
-
-
-
   return (
-  <svg  width='100%' height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 2688 1792" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-      <style>
+    <>
+    <Modal/>
+    <svg
+    className={styles['centered-svg']}
+    width="100%"
+    height="100%"
+    preserveAspectRatio="xMidYMid slice"
+    viewBox="0 0 2688 1792"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+  >
+         <style>
         {`
           .image-mapper-shape {
             fill: rgba(0, 0, 0, 0);
           }
         `}
       </style>
-     <Background/>
-      <image xlinkHref={imageUrl.src}  />
     
-     {isRadioOn && <image xlinkHref={radioOn.src}  />}
-     {isPhoneOn && <image xlinkHref={phoneOn.src}  />}
-     {isLightOn && <image xlinkHref={lightOn.src}  />}
+        {/* IMAGES */}
+      <Background/>
+      <image xlinkHref={imageUrl.src}  />
+      <ImageRadio />
+      <ImagePhone />
+      <ImageLight />
+    
 
+    {/* MARKERS */}
+      <MarkerRadio />
+      <MarkerPhone />
+      <MarkerLight/>
+      <MarkerCoffee/>
       {svgData.shapes.map((shape, index) => {
         const shapeContent = <g>
         {shape.type === 'rect' && (
@@ -165,6 +157,7 @@ isRadioOn ? play() : stop()
         </a>
       )})}
     </svg>
+    </>
   );
 };
 

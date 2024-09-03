@@ -3,9 +3,7 @@ import BackgroundImage from '../components/BackgroundImage';
 
 
 const App = () => {
-  return <main>
-  <BackgroundImage />
-  </main>;
+  return <BackgroundImage />
 };
 
 export default App;
