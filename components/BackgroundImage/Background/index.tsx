@@ -26,7 +26,7 @@ const cloudSprings = useSprings(
   cloudImages.map(() => ({
     from: { transform: 'translateX(0%)' },
     to: { transform: 'translateX(100%)' },
-    config: { duration: getRandomDuration() * 2000, easing: (t) => t },
+    config: { duration: getRandomDuration() * 2000, easing: (t:number) => t },
     loop: true,
     reverse: false
   }))

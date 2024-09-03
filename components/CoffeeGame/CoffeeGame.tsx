@@ -2,9 +2,8 @@
 
 import React from 'react'
 import styles from './styles.module.scss'
-import CoffeeMachine from './CoffeeMachine/CoffeeMachine'
-import Recipes from './Recipes/Recipes'
-import Ingredients from './Ingredients/Ingredients'
+import CoffeeMachine from './CoffeeMachine'
+import Recipes from './Recipes'
 
 const CoffeeGame: React.FC = () => {
  

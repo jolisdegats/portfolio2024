@@ -7,7 +7,6 @@ import {ImageRadio, MarkerRadio} from '@/components/BackgroundImage/Radio';
 import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
 import {ImageLight, MarkerLight} from '@/components/BackgroundImage/Light';
 import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
-import Modal from '@/components/Modal'
 import styles from "./styles.module.scss"
 
 interface Shape {
@@ -97,10 +96,7 @@ const BackgroundImage = () => {
     ],
   };
 
-  return (
-    <>
-    <Modal/>
-    <svg
+  return (<svg
     className={styles['centered-svg']}
     width="100%"
     height="100%"
@@ -157,7 +153,6 @@ const BackgroundImage = () => {
         </a>
       )})}
     </svg>
-    </>
   );
 };
 

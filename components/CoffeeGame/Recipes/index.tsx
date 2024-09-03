@@ -64,6 +64,11 @@ content : <>
       setOpenPages(Array.from(openPagesSet))
   };}
 
+  const handleRef = (el: HTMLDivElement | null, index: number) => {
+    if (el) {
+      frontPageRefs.current[index] = el;
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -72,7 +77,7 @@ content : <>
         
         {pagesData.map((page, index) => (
           <div
-            ref={(el) => (frontPageRefs.current[index] = el)}
+            ref={(el)=>handleRef(el, index)}
             style={{zIndex: openPages.includes(index)?  pagesData.length + index : pagesData.length - index }} 
             key={index + 1}
             className={classNames(styles.paper)}
