@@ -1,4 +1,5 @@
 import { useEffect, useCallback, ReactNode } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import styles from './styles.module.scss';
 import { useAppContext } from '@/lib/hooks';
 import Portal from '../Portal';
@@ -17,28 +18,44 @@ const Modal = ({ children, handleClose }: ModalProps) => {
     dispatch(changeModal({ name: '' }));
   }, [handleClose, dispatch]);
 
-  useEffect(() => {
-    const closeOnEscapeKey = (e: KeyboardEvent) => (e.key === 'Escape' ? onCloseModal() : null);
-    document.body.addEventListener('keydown', closeOnEscapeKey);
+  const handleOutsideClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onCloseModal();
+    }
+  }, [onCloseModal]);
 
+  useEffect(() => {
+    const closeOnEscapeKey = (e: KeyboardEvent) => e.key === 'Escape' ? onCloseModal() : null;
+    document.body.addEventListener('keydown', closeOnEscapeKey);
     return () => {
       document.body.removeEventListener('keydown', closeOnEscapeKey);
     };
   }, [onCloseModal]);
 
-  if (!modalOpen.name) return null;
-
   return (
     <Portal wrapperId="react-portal-modal-container">
-      <div className={styles.modal}>
-        <div className={styles['modal-content']}>
-          <div className={styles['modal-header']}>
-          <button onClick={onCloseModal} className={styles['close-btn']}>
-          X
-        </button></div>
-        <div className={styles['modal-body']}>{children}</div>
+      <CSSTransition
+        in={!!modalOpen.name}
+        timeout={300}
+        classNames={{
+          enter: styles['modal-enter'],
+          enterActive: styles['modal-enter-active'],
+          exit: styles['modal-exit'],
+          exitActive: styles['modal-exit-active'],
+        }}
+        unmountOnExit
+      >
+        <div className={styles.modal} onClick={handleOutsideClick}>
+          <div className={styles['modal-content']}>
+            <div className={styles['modal-header']}>
+              <button onClick={onCloseModal} className={styles['close-btn']}>
+                X
+              </button>
+            </div>
+            <div className={styles['modal-body']}>{children}</div>
+          </div>
         </div>
-      </div>
+      </CSSTransition>
     </Portal>
   );
 };
