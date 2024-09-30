@@ -126,6 +126,7 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
       const interval = setInterval(() => {
         setCoffeeHeight(prevHeight => {
           if (prevHeight >= maxHeight) {
+            stopCoffeePouring()
             setGameState('PAUSED');
             return maxHeight;
           }
@@ -135,7 +136,7 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
 
       return () => clearInterval(interval);
     }
-  }, [gameState, maxHeight]);
+  }, [gameState, maxHeight, stopCoffeePouring]);
 
   useEffect(() => {
     onStateChange?.({ objective, message, result });
@@ -177,7 +178,7 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
           })}/>
 
           <div className={styles.muggContainer}>
-            {!['END', 'OFF'].includes(gameState) && (
+            {!['END'].includes(gameState) && (
               <Mug 
                 coffeeHeight={coffeeHeight} 
                 onClickOnMug={handleMugClick} 
