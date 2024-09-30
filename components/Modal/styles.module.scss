@@ -1,6 +1,7 @@
 .modal {
+  user-select: none;
   position: fixed;
-  inset: 0; /* inset sets all 4 values (top right bottom left) much like how we set padding, margin etc., */
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
@@ -9,21 +10,38 @@
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   z-index: 999;
-  padding: 40px 20px 20px;
-  //   opacity: 0;
-  //   pointer-events: none;
-  //   transform: scale(0.4);
+  padding: 20px;
 }
 
 .modal-content {
-  width: 70%;
-  height: 70%;
+  width: 90%;
+  max-width: 1000px;
+  height: 90%;
+  max-height: 800px;
   background-color: #282c34;
   color: #fff;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 10px;
+}
+
+.modal-body {
+  width: 100%;
+  height: calc(100% - 50px); // Subtract the header height
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  overflow: auto;
 }
 
 .modal-enter-done {
@@ -34,4 +52,11 @@
 .modal-exit {
   opacity: 0;
   transform: scale(0.4);
+}
+
+.close-btn {
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem; 
 }

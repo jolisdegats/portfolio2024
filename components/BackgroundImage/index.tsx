@@ -1,13 +1,15 @@
 'use client'
 
-import imageUrl from '@/assets/main-background.png'
+import imageUrl from '@/assets/main-background.png';
+import gifCat from '@/assets/gif-cat.gif';
+import gifCode from '@/assets/gif-code.gif';
 
 import Background from '@/components/BackgroundImage/Background';
-import {ImageRadio, MarkerRadio} from '@/components/BackgroundImage/Radio';
+import { ImageRadio, MarkerRadio } from '@/components/BackgroundImage/Radio';
 import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
-import {ImageLight, MarkerLight} from '@/components/BackgroundImage/Light';
+import { ImageLight, MarkerLight } from '@/components/BackgroundImage/Light';
 import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 interface Shape {
   href?: string;
@@ -116,6 +118,8 @@ const BackgroundImage = () => {
         {/* IMAGES */}
       <Background/>
       <image xlinkHref={imageUrl.src}  />
+      <image xlinkHref={gifCode.src}  width="100%" height="100%" />
+      <image xlinkHref={gifCat.src}  width="100%" height="100%" />
       <ImageRadio />
       <ImagePhone />
       <ImageLight />

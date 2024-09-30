@@ -12,16 +12,17 @@
 
 .container {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 80px auto;
+  max-height: 100%;
+  margin: auto;
 }
 
 .coffeeMachine {
   max-width: 450px;
   width: 100%;
+  margin: 20px auto;
+  padding: 20px;
 }
+
 /* Start The Base */
 
 .aboveBase {
@@ -132,10 +133,10 @@
 .muggArm {
   z-index: 1;
   position: absolute;
-  left: 20px;
-  bottom: 25px;
-  width: 20px;
-  height: 30px;
+  left: 22px;
+  bottom: 22px;
+  width: 30px;
+  height: 44px;
   border-radius: 50%;
   border: 8px solid #f0e3d4;
   transform: rotate(9deg);
@@ -330,5 +331,17 @@
 @media (max-width: 480px) {
   .container {
     margin: 20px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .coffeeMachine {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .coffeeMachine {
+    transform: scale(0.8);
   }
 }

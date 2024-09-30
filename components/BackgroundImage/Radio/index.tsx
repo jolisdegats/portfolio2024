@@ -1,51 +1,44 @@
-import {  useEffect } from "react";
-import Shape, { ShapeType } from "../Shape"
+import Shape, { ShapeType } from "../Shape";
 import useSound from "use-sound";
-import radioMusicHappyChildren from '@/assets/happy-children.mp3'
-import radioTuning from '@/assets/tuning-radio.mp3'
-import radioSwitch from '@/assets/radio-switch.mp3'
-import radioOn from '@/assets/radio-on.png'
-import {  toggleRadio } from "@/lib/context";
+import radioMusicHappyChildren from '@/assets/happy-children.mp3';
+import radioTuning from '@/assets/tuning-radio.mp3';
+import radioSwitch from '@/assets/radio-switch.mp3';
+import radioOn from '@/assets/radio-on.png';
+import { toggleRadio } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 
 
 export const MarkerRadio = () => {
     const { state : {isRadioOn}, dispatch } = useAppContext(); 
-   
     const [playRadio, {stop : stopRadio}] = useSound(radioMusicHappyChildren);
     const [playSwitch, {stop : stopSwitch}] = useSound(radioSwitch, {volume : 0.25});
     const [playTuning, {stop : stopTuning}] = useSound(radioTuning, {volume : 0.5});
 
-    useEffect(()=> {
+
+
+    const handleRadioClick = () => {
+        dispatch(toggleRadio())
         if (isRadioOn) {
+            playSwitch();
+            stopTuning();
+            stopRadio();      
+            return () => stopSwitch()
+          } else {
             playSwitch();
             playTuning();
             playRadio();
+
+
+
+            
             setTimeout(() => {
                 stopTuning()
             }, 2000)
             return () => stopSwitch()
-          } else {
-            playSwitch();
-            stopTuning();
-            stopRadio();
-            return () => stopSwitch()
           }
-//     const turnRadioOn = () => {
-//         playSwitch()
-//         playTuning()
-//         playRadio()
-       
-//     }
-// const turnRadioOff = () =>{
-//     playSwitch()
-//     stopTuning()
-//     stopRadio()
-// }
-//     isRadioOn ? turnRadioOn() : turnRadioOff()
-    }, [isRadioOn, playRadio, stopRadio, playTuning, stopTuning, playSwitch, stopSwitch])
+        }
     const shape : ShapeType= {
-    onClick:() => dispatch(toggleRadio()),
+    onClick:handleRadioClick,
     title: 'Radio',
     type: 'rectangle',
     x:913.8689458689458 ,

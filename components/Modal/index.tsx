@@ -31,10 +31,13 @@ const Modal = ({ children, handleClose }: ModalProps) => {
   return (
     <Portal wrapperId="react-portal-modal-container">
       <div className={styles.modal}>
-        <button onClick={onCloseModal} className={styles['close-btn']}>
-          Close
-        </button>
-        <div className={styles['modal-content']}>{children}</div>
+        <div className={styles['modal-content']}>
+          <div className={styles['modal-header']}>
+          <button onClick={onCloseModal} className={styles['close-btn']}>
+          X
+        </button></div>
+        <div className={styles['modal-body']}>{children}</div>
+        </div>
       </div>
     </Portal>
   );

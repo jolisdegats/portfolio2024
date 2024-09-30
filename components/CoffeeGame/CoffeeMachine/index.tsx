@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import styles from './styles.module.scss'
-import classnames from "classnames"
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import styles from './styles.module.scss';
+import classnames from "classnames";
+interface CoffeeMachineProps {
+  onStateChange: (state: { objective: number; message: string; result: string }) => void;
+  hideControls?: boolean;
+}
 
-const CoffeeMachine: React.FC = () => {
-  const [gameState, setGameState] = useState<'END' | 'RUN' | 'PAUSED'>('END')
+const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideControls = false }) => {
+  const [gameState, setGameState] = useState<'END' | 'RUN' | 'PAUSED' | 'OFF'>('OFF')
   const [objective, setObjective] = useState(0)
   const [message, setMessage] = useState('')
   const [result, setResult] = useState('')
@@ -30,12 +34,12 @@ const CoffeeMachine: React.FC = () => {
 
 const onClickBtnOff = () => {
     resetGame()
-    setGameState('END')
+    setGameState('OFF')
 }
 
 const onClickBtnOn = () => {
     setGameState('PAUSED')
-    if ( gameState === 'END' ) {
+    if ( ['OFF', 'END'].includes(gameState) ) {
         resetGame()
         setObjective(Math.floor(Math.random() * 100))
     } else {
@@ -46,18 +50,21 @@ const onClickBtnOn = () => {
 const onClickBtnCoffee = () => {
     if ( gameState === 'RUN' ) {
         setGameState('PAUSED')
-    } else{ 
-        if (gameState === 'END'){
+    } else{
+    if (gameState !== 'OFF'){
+      if(gameState === 'END'){
         resetGame()
         setObjective(Math.floor(Math.random() * 100))
-     }
+      }
     setGameState('RUN') 
+  }
 }
 }
 
 
   const calculateResult = useCallback(() => {
     const percentage = calculatePercentage()
+    if(gameState === 'RUN'){
     setResult(`Percent Filled: ${percentage}%`)
 
     if (percentage === objective) {
@@ -69,12 +76,15 @@ const onClickBtnCoffee = () => {
     } else {
       setMessage("Meh... Not yet a barista!")
     }
+  }
   }, [calculatePercentage, objective])
 
 
   const onClickOnMug = useCallback(() => {
-    setGameState('END')
-    calculateResult()
+    if(coffeeHeight > 0){    
+      setGameState('END')
+      calculateResult()
+    }
   }, [calculateResult])
 
   useEffect(() => {
@@ -94,6 +104,11 @@ const onClickBtnCoffee = () => {
     }
   }, [gameState])
 
+  useEffect(() => {
+    onStateChange({ objective, message, result });
+  }, [objective, message, result, onStateChange]);
+
+
   return (
     <div className={styles.container}>
       <div className={styles.coffeeMachine}>
@@ -104,11 +119,11 @@ const onClickBtnCoffee = () => {
           />
           <button 
             onClick={onClickBtnOff} 
-            className={classnames(styles.choice, styles.choice1, { [styles['choice1--active']]: gameState === 'END' })}
+            className={classnames(styles.choice, styles.choice1, { [styles['choice1--active']]: gameState === 'OFF' })}
           />
           <button 
             onClick={onClickBtnOn} 
-            className={classnames(styles.choice, styles.choice2, { [styles['choice2--active']]: gameState !== 'END' })}
+            className={classnames(styles.choice, styles.choice2, { [styles['choice2--active']]: gameState !== 'OFF' })}
           />
         </div>
 
@@ -154,13 +169,14 @@ const onClickBtnCoffee = () => {
         <div className={styles.base}>
         <div/>
           <div className={styles.spans}>
+            {!hideControls && (
             <div>
             <p>
             Fill the coffee cup {!!objective && `to ${objective}%`} <br/>
             {<small>{[result, message].filter(Boolean).join(' - ')}</small>}
-           
             </p>
             </div>
+            )}
           </div>
         </div>
         </div>        
