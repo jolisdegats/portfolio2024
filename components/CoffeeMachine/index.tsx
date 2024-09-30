@@ -1,12 +1,26 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './styles.module.scss';
 import classnames from "classnames";
+import useSound from 'use-sound';
+import coffeeMachineOnOff from '../../assets/sounds/coffee-machine-on-off.mp3';
+import coffeePouring from '../../assets/sounds/coffee-pouring.mp3';
+import coffeePouringEnd from '../../assets/sounds/coffee-pouring-end3.mp3';
+import mugServed from '../../assets/sounds/mug-served.mp3';
+import Mug from './Mug';
+
 interface CoffeeMachineProps {
-  onStateChange: (state: { objective: number; message: string; result: string }) => void;
+  onStateChange?: (state: { objective: number; message: string; result: string }) => void;
   hideControls?: boolean;
 }
 
 const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideControls = false }) => {
+  const coffeeRef = useRef<HTMLDivElement>(null)
+  const mugRef = useRef<HTMLDivElement>(null)
+  const maxHeight = mugRef.current?.clientHeight || 0
+  const [playCoffeeMachineOnOff] = useSound(coffeeMachineOnOff);
+  const [playCoffeePouring, {stop : stopCoffeePouringSound}] = useSound(coffeePouring);
+  const [playCoffeePouringEnd] = useSound(coffeePouringEnd);
+  const [playMugServed] = useSound(mugServed);
   const [gameState, setGameState] = useState<'END' | 'RUN' | 'PAUSED' | 'OFF'>('OFF')
   const [objective, setObjective] = useState(0)
   const [message, setMessage] = useState('')
@@ -14,8 +28,13 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
   const [coffeeHeight, setCoffeeHeight] = useState(0)
   const SPEED_IN_MS = 50
 
-  const coffeeRef = useRef<HTMLDivElement>(null)
-  const mugRef = useRef<HTMLDivElement>(null)
+  const stopCoffeePouring = useCallback(() => {
+    if(coffeeHeight > 0 && gameState === 'RUN'){
+    playCoffeePouringEnd()
+      stopCoffeePouringSound()
+    }
+  }, [stopCoffeePouringSound, playCoffeePouringEnd, coffeeHeight, gameState])
+
 
   const calculatePercentage = useCallback((): number => {
     if (mugRef.current) {
@@ -33,11 +52,19 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
 
 
 const onClickBtnOff = () => {
+  stopCoffeePouring()
+  if(gameState !== 'END'){
+  playCoffeeMachineOnOff()
+}
     resetGame()
     setGameState('OFF')
 }
 
 const onClickBtnOn = () => {
+  stopCoffeePouring()
+  if(gameState === 'OFF'){
+    playCoffeeMachineOnOff()
+  }
     setGameState('PAUSED')
     if ( ['OFF', 'END'].includes(gameState) ) {
         resetGame()
@@ -48,23 +75,29 @@ const onClickBtnOn = () => {
 }
 
 const onClickBtnCoffee = () => {
+  stopCoffeePouring()
     if ( gameState === 'RUN' ) {
-        setGameState('PAUSED')
+      setGameState('PAUSED')
     } else{
     if (gameState !== 'OFF'){
       if(gameState === 'END'){
         resetGame()
         setObjective(Math.floor(Math.random() * 100))
-      }
-    setGameState('RUN') 
-  }
+        setGameState('PAUSED')
+      }}
+      console.log('gameState', gameState, maxHeight, coffeeHeight)
+    if(maxHeight > coffeeHeight){
+      playCoffeePouring()
+      setGameState('RUN') 
+    }
+  
 }
 }
 
 
   const calculateResult = useCallback(() => {
     const percentage = calculatePercentage()
-    if(gameState === 'RUN'){
+    if(['RUN', 'PAUSED'].includes(gameState)){
     setResult(`Percent Filled: ${percentage}%`)
 
     if (percentage === objective) {
@@ -77,21 +110,23 @@ const onClickBtnCoffee = () => {
       setMessage("Meh... Not yet a barista!")
     }
   }
-  }, [calculatePercentage, objective])
+  }, [calculatePercentage, objective, gameState])
+
 
 
   const onClickOnMug = useCallback(() => {
-    if(coffeeHeight > 0){    
+    stopCoffeePouring()
+    if(coffeeHeight > 0){   
+      playMugServed()
       setGameState('END')
       calculateResult()
     }
-  }, [calculateResult])
+  }, [calculateResult, coffeeHeight, playMugServed, stopCoffeePouring])
 
   useEffect(() => {
     if (gameState === 'RUN') {
       const interval = setInterval(() => {
         setCoffeeHeight(prevHeight => {
-          const maxHeight = mugRef.current?.clientHeight || 0
           if (prevHeight >= maxHeight) {
             setGameState('PAUSED')
             return maxHeight
@@ -102,10 +137,10 @@ const onClickBtnCoffee = () => {
 
       return () => clearInterval(interval)
     }
-  }, [gameState])
+  }, [gameState, maxHeight])
 
   useEffect(() => {
-    onStateChange({ objective, message, result });
+    onStateChange?.({ objective, message, result });
   }, [objective, message, result, onStateChange]);
 
 
@@ -144,25 +179,10 @@ const onClickBtnCoffee = () => {
             [styles["coffeePouring--active"]]: gameState === 'RUN'
           })}/>
 
-          <div className={styles.muggContainer}>
-            <div className={styles.muggContainerRelative} onClick={onClickOnMug}>
-              <div ref={mugRef} className={styles.mugg} />
-              <div 
-                ref={coffeeRef}   
-                style={{ transform: `scaleY(${Math.min(coffeeHeight / (mugRef.current?.clientHeight || 1), 1)})` }}
-                className={styles.coffee}
-              />
-              <div className={styles.muggArm}/>
-              {gameState === 'RUN' && (
-                <>
-                  <div className={classnames(styles.bubble, styles.b1)}/>
-                  <div className={classnames(styles.bubble, styles.b2)}/>
-                  <div className={classnames(styles.bubble, styles.b3)}/>
-                </>
-              )}
-            </div>
-            <div className={styles.muggBase}/>
-          </div>
+<div className={styles.muggContainer}>
+         {!['END', 'OFF'].includes(gameState) && <Mug coffeeHeight={coffeeHeight} onClickOnMug={onClickOnMug} mugRef={mugRef} coffeeRef={coffeeRef} gameState={gameState}/>}
+    <div className={styles.muggBase}/>
+  </div>
         </div>
 
         <div className={styles.aboveBase}/>

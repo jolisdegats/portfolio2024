@@ -1,0 +1,70 @@
+
+  
+  .muggContainerRelative {
+    position: relative;
+    bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .coffee {
+    z-index: 6;
+    position: absolute;
+    bottom: 5px;
+    left: -30px;
+    background-color: #793d2e;
+    width: 60px;
+    height: 75px;
+    border-radius: 0px 0px 20% 20%;
+    box-shadow: inset 7px -3px 3px #c18255;
+    transform-origin: bottom;
+  }
+  
+  .mugg {
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #f0e3d4;
+    width: 70px;
+    height: 90px;
+    border-radius: 5px 5px 10% 10%;
+    transition: opacity 0.3s, left 1s;
+    transform: translateX(-50%);
+  }
+  
+  .muggArm {
+    z-index: 1;
+    position: absolute;
+    left: 22px;
+    bottom: 22px;
+    width: 30px;
+    height: 44px;
+    border-radius: 50%;
+    border: 8px solid #f0e3d4;
+    transform: rotate(9deg);
+  }
+  
+  .bubble {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    opacity: 0;
+    transition: 0.7s;
+    animation: bubblesAnimation 8s infinite linear;
+  }
+  
+  .b1 {
+    animation-delay: 3.6s !important;
+  }
+  
+  .b2 {
+    animation-delay: 5.5s !important;
+  }
+  .b3 {
+    animation-delay: 7.8s !important;
+  }
+  

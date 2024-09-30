@@ -21,7 +21,6 @@
   justify-content: flex-start;
   border-radius: 10px;
   overflow: hidden;
-  transform: translateY(0px);
 }
 
 .modal-header {
@@ -53,7 +52,7 @@
 
 .modal-enter-active {
   opacity: 1;
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity 300ms;
 }
 
 .modal-exit {
@@ -65,13 +64,24 @@
   transition: opacity 300ms;
 }
 
-.modal-enter .modal-content,
-.modal-exit-active .modal-content {
+.modal-enter .modal-content {
   transform: translateY(20px);
 }
 
-.modal-enter-active .modal-content,
-.modal-exit .modal-content {
-  transform: translateY(0px);
+.modal-enter-active .modal-content {
+  transform: translateY(0);
   transition: transform 300ms;
+}
+
+.modal-exit .modal-content {
+  transform: translateY(0);
+}
+
+.modal-exit-active .modal-content {
+  transform: translateY(20px);
+  transition: transform 300ms;
+}
+
+.modal-content-transition {
+  transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
 }

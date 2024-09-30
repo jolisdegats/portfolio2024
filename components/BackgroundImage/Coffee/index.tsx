@@ -3,9 +3,9 @@ import Shape, { ShapeType } from "../Shape";
 import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
 import useSound from "use-sound";
-import mug from '@/assets/mug.mp3';
+import mug from '@/assets/sounds/mug.mp3';
 import Modal from "@/components/Modal";
-import CoffeeMachine from "@/components/CoffeeGame/CoffeeMachine";
+import CoffeeMachine from "@/components/CoffeeMachine";
 import styles from "./styles.module.scss";
 import { useState } from "react";
 
@@ -18,10 +18,6 @@ export const MarkerCoffee = () => {
         play();
         dispatch(changeModal({name : "coffee"}));
     }
-
-    const handleGameStateChange = (newState: { objective: number; message: string; result: string }) => {
-        setGameState(newState);
-    };
 
     const shape : ShapeType= {
         type:"rectangle",
@@ -50,7 +46,7 @@ export const MarkerCoffee = () => {
                 )}
             </div>
             <div className={styles.game}>
-            <CoffeeMachine onStateChange={handleGameStateChange} hideControls/>
+            <CoffeeMachine onStateChange={setGameState} hideControls/>
             </div>
         </div>
     </Modal>

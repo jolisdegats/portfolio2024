@@ -2,17 +2,14 @@
 
 import React from 'react'
 import styles from './styles.module.scss'
-import CoffeeMachine from './CoffeeMachine'
+import CoffeeMachine from '../CoffeeMachine'
 import Recipes from './Recipes'
 
 const CoffeeGame: React.FC = () => {
- 
-  return (
+ return (
     <section className={styles.coffeeMachine}>
       <CoffeeMachine/>
       <Recipes/>
-      
-
     </section>
   )
 }

@@ -1,8 +1,8 @@
 import Shape, { ShapeType } from "../Shape";
 import useSound from "use-sound";
-import radioMusicHappyChildren from '@/assets/happy-children.mp3';
-import radioTuning from '@/assets/tuning-radio.mp3';
-import radioSwitch from '@/assets/radio-switch.mp3';
+import radioMusicHappyChildren from '@/assets/sounds/happy-children.mp3';
+import radioTuning from '@/assets/sounds/tuning-radio.mp3';
+import radioSwitch from '@/assets/sounds/radio-switch.mp3';
 import radioOn from '@/assets/radio-on.png';
 import { toggleRadio } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";

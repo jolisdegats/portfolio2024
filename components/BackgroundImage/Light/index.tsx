@@ -1,8 +1,8 @@
-import Shape, {  ShapeType } from "../Shape"
-import lightOn from '../../../assets/light.png'
-import {  toggleLight } from "@/lib/context";
+import Shape, { ShapeType } from "../Shape";
+import lightOn from '../../../assets/light.png';
+import { toggleLight } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
-import turnonlamp from "@/assets/turnonlamp.mp3"
+import turnonlamp from "@/assets/sounds/turnonlamp.mp3";
 import useSound from "use-sound";
 
 export const MarkerLight = () => {
