@@ -4,7 +4,9 @@ export type Action =
   | { type: 'TOGGLE_RADIO' }
   | { type: 'TOGGLE_LIGHT' }
   | { type: 'TOGGLE_PHONE' }
-  | { type: 'CHANGE_MODAL', payload : ToggleModalPayload };
+  | { type: 'TOGGLE_HELP_MARKERS'}
+  | { type: 'CHANGE_MODAL', payload : ToggleModalPayload }
+
 
 export const toggleRadio = (): Action => ({
   type: 'TOGGLE_RADIO',
@@ -21,4 +23,8 @@ export const togglePhone = (): Action => ({
 export const changeModal = (payload : ToggleModalPayload): Action => ({
   type: 'CHANGE_MODAL',
   payload
+});
+
+export const toggleHelpMarkers = (): Action => ({
+  type: 'TOGGLE_HELP_MARKERS'
 });

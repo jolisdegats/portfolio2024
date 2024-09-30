@@ -1,0 +1,28 @@
+.visible {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      r: 10;
+      opacity: 0.2;
+    }
+    50% {
+      r: 11;
+      opacity: 0.4;
+    }
+    100% {
+      r: 10;
+      opacity: 0.2;
+    }
+  }

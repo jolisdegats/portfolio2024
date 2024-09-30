@@ -8,9 +8,10 @@ import { changeModal } from '@/lib/context';
 type ModalProps = {
   children: ReactNode;
   handleClose?: () => void;
+  name: string;
 };
 
-const Modal = ({ children, handleClose }: ModalProps) => {
+const Modal = ({ children, handleClose, name }: ModalProps) => {
   const { state: { modalOpen }, dispatch } = useAppContext();
 
   const onCloseModal = useCallback(() => {
@@ -35,7 +36,7 @@ const Modal = ({ children, handleClose }: ModalProps) => {
   return (
     <Portal wrapperId="react-portal-modal-container">
       <CSSTransition
-        in={!!modalOpen.name}
+        in={modalOpen.name === name}
         timeout={300}
         classNames={{
           enter: styles['modal-enter'],

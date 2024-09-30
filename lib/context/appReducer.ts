@@ -5,8 +5,10 @@ import { AppState } from "./AppContext";
 
 const appReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case 'TOGGLE_RADIO':
-      return { ...state, isRadioOn: !state.isRadioOn };
+    case 'TOGGLE_HELP_MARKERS':
+      return { ...state, showHelpMarkers: !state.showHelpMarkers };
+      case 'TOGGLE_RADIO':
+        return { ...state, isRadioOn: !state.isRadioOn };
     case 'TOGGLE_LIGHT':
       return { ...state, isLightOn: !state.isLightOn };
     case 'TOGGLE_PHONE':

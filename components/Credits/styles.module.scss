@@ -1,0 +1,54 @@
+.creditsContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.creditsTitle {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.creditsContent {
+    section {
+        margin-bottom: 2rem;
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 1rem;
+
+            li {
+                margin-bottom: 0.5rem;
+
+                ul {
+                    padding-left: 1rem;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+    }
+
+    a {
+        color: #0070f3;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.creditsFooter {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    color: #777;
+}

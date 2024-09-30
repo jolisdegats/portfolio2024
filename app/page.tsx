@@ -1,9 +1,7 @@
-import BackgroundImage from '../components/BackgroundImage';
-
-
+import ClientPage from './client.page';
 
 const App = () => {
-  return <BackgroundImage />
+  return <ClientPage />
 };
 
 export default App;

@@ -34,7 +34,7 @@ export const MarkerCoffee = () => {
         height:43.39601139601143 
     }
     return <>
-    <Modal handleClose={() => coffeMachineRef.current?.resetGame({gameState: 'OFF'})}>
+    <Modal handleClose={() => coffeMachineRef.current?.resetGame({gameState: 'OFF'})} name="coffee">
         <div className={styles.gameModal}>
             <div className={styles.gameInfo}>
                 <h2>Want some coffee?</h2>
