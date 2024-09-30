@@ -1,8 +1,7 @@
 import React from 'react';
 
-interface CommonShapeProps {
+interface CommonShapeProps extends React.HTMLAttributes<HTMLAnchorElement> {
   href?: string;
-  onClick?: () => void;
   title?: string;
 }
 
@@ -28,7 +27,7 @@ export type ShapeLinkProps = {
 
 const Shape = ({ shape, index }: ShapeLinkProps) => {
   return (
-    <a className="cursor-pointer" key={index} onClick={shape.onClick} href={shape.href}  target="_self" title={shape.title} style={{zIndex : 10}}>
+    <a className="cursor-pointer" key={index} target="_self" {...shape} style={{zIndex : 10, ...shape.style}}>
       <g>
         {shape.type === 'rectangle' && (
           <rect

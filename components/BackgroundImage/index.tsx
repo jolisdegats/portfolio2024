@@ -1,7 +1,6 @@
 'use client'
 
 import imageUrl from '@/assets/main-background.png';
-import gifCat from '@/assets/gif-cat.gif';
 import gifCode from '@/assets/gif-code.gif';
 
 import Background from '@/components/BackgroundImage/Background';
@@ -10,6 +9,7 @@ import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
 import { ImageLight, MarkerLight } from '@/components/BackgroundImage/Light';
 import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
 import styles from "./styles.module.scss";
+import { ImageCat, MarkerCat } from './Cat';
 
 interface Shape {
   href?: string;
@@ -58,15 +58,6 @@ const BackgroundImage = () => {
         title: '',
         type: 'polygon',
         points: "1243.17 1018.53 1263.59 1005.77 1278.91 987.897 1281.46 1021.08 1141.06 1018.53 1125.74 993.003 1128.3 860.262 1289.12 857.709 1263.59 875.578 1243.17 985.345 1220.19 1000.66",
-      },
-  
-      
-      {
-        href: '#1',
-        title: '',
-        type: 'rect',
-        x:1092.5584045584046 ,
-        y:1102.7692307692307, width:74.02849002849007, height:148.05698005698014 
       },
       {
         href: '#1',
@@ -119,7 +110,7 @@ const BackgroundImage = () => {
       <Background/>
       <image xlinkHref={imageUrl.src}  />
       <image xlinkHref={gifCode.src}  width="100%" height="100%" />
-      <image xlinkHref={gifCat.src}  width="100%" height="100%" />
+      <ImageCat />
       <ImageRadio />
       <ImagePhone />
       <ImageLight />
@@ -130,6 +121,7 @@ const BackgroundImage = () => {
       <MarkerPhone />
       <MarkerLight/>
       <MarkerCoffee/>
+      <MarkerCat/>
       {svgData.shapes.map((shape, index) => {
         const shapeContent = <g>
         {shape.type === 'rect' && (

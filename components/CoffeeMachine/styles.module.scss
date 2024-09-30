@@ -94,14 +94,14 @@
 
 .muggContainer {
   position: absolute;
-  bottom: 0px;
   left: 50%;
+  bottom: 5px;
 }
 
 .muggBase {
   z-index: 1;
   position: absolute;
-  bottom: 0;
+  bottom: -5px;
   left: 50%;
   width: 100px;
   height: 5px;
@@ -253,18 +253,6 @@
   }
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .container {
-    margin: 50px auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    margin: 20px auto;
-  }
-}
 
 @media (max-width: 768px) {
   .coffeeMachine {

@@ -3,11 +3,13 @@
   grid-template-columns: 3fr 5fr;
   width: 100%;
   height: 100%;
-  padding: 20px;
 }
 
 .gameInfo {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
   text-align: center;
   h2 {
     font-size: 2rem;
@@ -24,4 +26,25 @@
   width: 100%;
   height: 100%;
   display: flex;
+}
+
+.endGameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 50vh; // Adjust this value as needed
+  overflow-y: auto;
+}
+.mugContainerRelative {
+  position: relative;
+  cursor: pointer;
+  width: 90px; // Add this line
+  height: 90px; // Add this line
+}
+
+.mugContainer {
+width: 90px;
+height: 90px;
+left: 36px;
+position: absolute;
 }

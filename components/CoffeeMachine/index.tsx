@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import styles from './styles.module.scss';
 import classnames from "classnames";
 import useSound from 'use-sound';
@@ -8,14 +8,31 @@ import coffeePouringEnd from '../../assets/sounds/coffee-pouring-end3.mp3';
 import mugServed from '../../assets/sounds/mug-served.mp3';
 import Mug from './Mug';
 
+export interface HandleStateChange {
+  gameState: GameState;
+  objective: number;
+  message: string;
+  result: string;
+  coffeeHeight: number;
+}
+
 interface CoffeeMachineProps {
-  onStateChange?: (state: { objective: number; message: string; result: string }) => void;
+  handleStateChange?: (state: Partial<HandleStateChange>) => void;
   hideControls?: boolean;
 }
 
-type GameState = 'END' | 'RUN' | 'PAUSED' | 'OFF';
+export type GameState = 'END' | 'RUN' | 'PAUSED' | 'OFF';
 
-const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideControls = false }) => {
+export interface CoffeeMachineRef {
+  resetGame: (params: ResetGameParams) => void;
+}
+
+interface ResetGameParams {
+  gameState?: GameState;
+  shouldGetNewObjective?: boolean;
+}
+
+const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handleStateChange, hideControls = false }, ref) => {
   const coffeeRef = useRef<HTMLDivElement>(null);
   const mugRef = useRef<HTMLDivElement>(null);
   const [playCoffeeMachineOnOff] = useSound(coffeeMachineOnOff);
@@ -31,8 +48,6 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
 
   const SPEED_IN_MS = 50;
 
-  const maxHeight = mugRef.current?.clientHeight || 0;
-
   const stopCoffeePouring = useCallback(() => {
     if (coffeeHeight > 0 && gameState === 'RUN') {
       playCoffeePouringEnd();
@@ -44,25 +59,34 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
     return mugRef.current ? Math.round((coffeeHeight / mugRef.current.clientHeight) * 100) : 0;
   }, [coffeeHeight]);
 
-  const resetGame = useCallback(() => {
+  const resetGame = useCallback(({gameState = 'PAUSED', shouldGetNewObjective = false} : ResetGameParams) => {
+    const newObjective = shouldGetNewObjective ? Math.floor(Math.random() * 100) : 0;
+    stopCoffeePouring()
     setCoffeeHeight(0);
     setResult('');
     setMessage('');
-    setObjective(0);
-  }, []);
+    setObjective(newObjective);
+    setGameState(gameState);
+    handleStateChange?.({gameState, coffeeHeight: 0, objective: newObjective, result: '', message: '' });
+  }, [handleStateChange, stopCoffeePouring]);
+
+  useImperativeHandle(ref, () => ({
+    resetGame
+  }));
 
   const setNewObjective = useCallback(() => {
-    setObjective(Math.floor(Math.random() * 100));
-  }, []);
+    const newObjective = Math.floor(Math.random() * 100);
+    setObjective(newObjective);
+    handleStateChange?.({ objective: newObjective });
+  }, [handleStateChange]);
 
   const handleBtnOff = useCallback(() => {
-    stopCoffeePouring();
     if (gameState !== 'END') {
       playCoffeeMachineOnOff();
     }
-    resetGame();
+    resetGame({gameState: 'OFF'});
     setGameState('OFF');
-  }, [gameState, playCoffeeMachineOnOff, resetGame, stopCoffeePouring]);
+  }, [gameState, playCoffeeMachineOnOff, resetGame]);
 
   const handleBtnOn = useCallback(() => {
     stopCoffeePouring();
@@ -71,7 +95,7 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
     }
     setGameState('PAUSED');
     if (['OFF', 'END'].includes(gameState)) {
-      resetGame();
+      resetGame({});
       setNewObjective();
     } else {
       setCoffeeHeight(0);
@@ -84,33 +108,37 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
       setGameState('PAUSED');
     } else if (gameState !== 'OFF') {
       if (gameState === 'END') {
-        resetGame();
+        resetGame({});
         setNewObjective();
         setGameState('PAUSED');
       }
-      if (maxHeight > coffeeHeight) {
-        playCoffeePouring();
-        setGameState('RUN');
-      }
+        if(gameState === 'PAUSED') {
+          playCoffeePouring()
+        }
+      setGameState('RUN');
     }
-  }, [coffeeHeight, gameState, maxHeight, playCoffeePouring, resetGame, setNewObjective, stopCoffeePouring]);
+  }, [gameState, playCoffeePouring, resetGame, setNewObjective, stopCoffeePouring]);
 
   const calculateResult = useCallback(() => {
     const percentage = calculatePercentage();
     if (['RUN', 'PAUSED'].includes(gameState)) {
       setResult(`Percent Filled: ${percentage}%`);
 
+      let newMessage = '';
       if (percentage === objective) {
-        setMessage('Nailed it! Good job!');
+        newMessage = 'Nailed it! Good job!';
       } else if (Math.abs(objective - percentage) < 5) {
-        setMessage('Eh. Close enough.');
+        newMessage = 'Eh. Close enough.';
       } else if (Math.abs(objective - percentage) < 10) {
-        setMessage('You can do better!');
+        newMessage = 'You can do better!';
       } else {
-        setMessage("Meh... Not yet a barista!");
+        newMessage = "Meh... Not yet a barista!";
       }
+
+      setMessage(newMessage);
+      handleStateChange?.({ result: `Percent Filled: ${percentage}%`, message: newMessage, coffeeHeight: percentage, gameState: 'END' });
     }
-  }, [calculatePercentage, objective, gameState]);
+  }, [calculatePercentage, objective, gameState, handleStateChange]);
 
   const handleMugClick = useCallback(() => {
     stopCoffeePouring();
@@ -125,9 +153,10 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
     if (gameState === 'RUN') {
       const interval = setInterval(() => {
         setCoffeeHeight(prevHeight => {
+          const maxHeight = mugRef.current?.clientHeight ?? 0;
           if (prevHeight >= maxHeight) {
-            stopCoffeePouring()
             setGameState('PAUSED');
+            stopCoffeePouring()
             return maxHeight;
           }
           return prevHeight + 1;
@@ -136,11 +165,7 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
 
       return () => clearInterval(interval);
     }
-  }, [gameState, maxHeight, stopCoffeePouring]);
-
-  useEffect(() => {
-    onStateChange?.({ objective, message, result });
-  }, [objective, message, result, onStateChange]);
+  }, [gameState, stopCoffeePouring]);
 
   return (
     <div className={styles.container}>
@@ -208,6 +233,8 @@ const CoffeeMachine: React.FC<CoffeeMachineProps> = ({ onStateChange, hideContro
       </div>        
     </div>
   );
-};
+})
+
+CoffeeMachine.displayName = 'CoffeeMachine';
 
 export default CoffeeMachine;
