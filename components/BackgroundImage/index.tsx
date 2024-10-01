@@ -10,6 +10,7 @@ import { ImageLight, MarkerLight } from '@/components/BackgroundImage/Light';
 import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
 import styles from "./styles.module.scss";
 import { ImageCat, MarkerCat } from './Cat';
+import MarkerFlowers from './Flowers';
 
 interface Shape {
   href?: string;
@@ -80,12 +81,7 @@ const BackgroundImage = () => {
         type: 'polygon',
         points: "1723.08 781.128 1832.84 763.259 2151.93 765.812 2139.17 1243.17 2037.06 1217.64 2037.06 1460.15 1835.4 1452.49 1720.52 1368.25",
       },
-      {
-        href: '#7',
-        title: '',
-        type: 'polygon',
-        points:  "732.627 1324.85 901.105 1327.41 903.658 1067.03 888.342 1031.29 903.658 931.738 916.422 867.92 964.923 829.63 941.949 778.576 783.681 804.103 765.812 635.624 770.917 556.49 650.94 668.809 597.333 939.396 681.573 1018.53 684.125 1207.43",
-      },
+     
     ],
   };
 
@@ -121,6 +117,7 @@ const BackgroundImage = () => {
       <MarkerPhone />
       <MarkerLight/>
       <MarkerCoffee/>
+      <MarkerFlowers/>
       <MarkerCat/>
       {svgData.shapes.map((shape, index) => {
         const shapeContent = <g>

@@ -68,8 +68,8 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
           transform={`translate(${markerX}, ${markerY})`} 
           className={`pointer-events-none ${isVisible ? styles.visible : styles.hidden}`}
         >
-          <circle r="12" fill={markerColor} className={styles.pulse} />
-          <circle r="6" fill={markerColor} />
+          <circle r="20" fill={markerColor} className={styles.pulse} />
+          <circle r="10" fill={markerColor} />
         </g>
       </g>
     </a>

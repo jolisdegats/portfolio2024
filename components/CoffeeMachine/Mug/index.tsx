@@ -1,3 +1,4 @@
+import type { GameState } from '..';
 import styles from './styles.module.scss';
 import classnames from 'classnames';
 
@@ -6,7 +7,7 @@ interface MugProps {
   onClickOnMug?: () => void;
   mugRef?: React.RefObject<HTMLDivElement>;
   coffeeRef?: React.RefObject<HTMLDivElement>;
-  gameState?: string;
+  gameState?: GameState;
 }
 
 const Mug = ({coffeeHeight, onClickOnMug, mugRef, coffeeRef, gameState = 'RUN' }: MugProps) => {
@@ -19,13 +20,13 @@ const Mug = ({coffeeHeight, onClickOnMug, mugRef, coffeeRef, gameState = 'RUN' }
         className={styles.coffee}
       />
       <div className={styles.muggArm}/>
-      {gameState === 'RUN' && (
-        <>
+      {coffeeHeight > 0 && ['RUN', 'PAUSED'].includes(gameState) && (
+        <div className={styles.bubblesContainer}>
           <div className={classnames(styles.bubble, styles.b1)}/>
           <div className={classnames(styles.bubble, styles.b2)}/>
           <div className={classnames(styles.bubble, styles.b3)}/>
-        </>
-      )}
+        </div>
+      )} 
       </button>
   )
 }

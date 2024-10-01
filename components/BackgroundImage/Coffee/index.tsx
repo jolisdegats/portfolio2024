@@ -51,10 +51,9 @@ export const MarkerCoffee = () => {
                     <div className={styles.endGameContainer}>
                          <div className={styles.mugContainerRelative}>
                         <div className={styles.mugContainer}>
-                            <Mug onClickOnMug={() => coffeMachineRef.current?.resetGame({gameState: 'RUN',shouldGetNewObjective:true})} coffeeHeight={gameState.coffeeHeight/100} />
+                            <Mug onClickOnMug={() => coffeMachineRef.current?.resetGame({gameState: 'PAUSED',shouldGetNewObjective:true})} coffeeHeight={gameState.coffeeHeight/100} />
                         </div>
                         </div>
-                        
                     </div>
                 )}
                 {gameState.message && (

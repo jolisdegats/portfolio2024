@@ -1,18 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 224, 224, 224;
+  --background-start-rgb: 40, 44, 52;
+  --background-end-rgb: 40, 44, 52;
+  --title-color: #4a90e2;
+  --link-color: #a3c4ff;
+  --link-hover-color: #61dafb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 224, 224, 224;
+    --background-start-rgb: 40, 44, 52;
+    --background-end-rgb: 40, 44, 52;
   }
 }
 
@@ -24,6 +29,23 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: var(--title-color);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-shadow: 0 0 8px rgba(97, 218, 251, 0.5);
 }
 
 @layer utilities {
