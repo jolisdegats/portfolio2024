@@ -11,6 +11,7 @@ import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
 import styles from "./styles.module.scss";
 import { ImageCat, MarkerCat } from './Cat';
 import MarkerFlowers from './Flowers';
+import { MarkerMe } from './Me';
 
 interface Shape {
   href?: string;
@@ -33,30 +34,9 @@ interface Shape {
 const BackgroundImage = () => {
   const svgData : SvgData = {
     shapes: [
-      // {
-      //   onClick: () => setIsLightOn(!isLightOn),
-      //   title: '',
-      //   type: 'polygon',
-      //   points: "1666.92 1003.21 1669.47 878.131 1631.18 860.262 1620.97 885.789 1585.23 865.367 1613.31 839.84 1641.39 850.051 1679.68 865.367 1674.58 1000.66 1695 1005.77 1700.1 1018.53 1631.18 1015.98 1631.18 1000.66",
-      // },
-      // {
-      //   onClick:() => setIsPhoneOn(!isPhoneOn),
-      //   title: '',
-      //   type: 'rect',
-      //   x:1531.6239316239316 ,
-      //   y:1003.2136752136752, width:86.79202279202286, height:12.763532763533021 
-      // },
-      // {
-      //   onClick:() => setIsRadioOn(!isRadioOn),
-      //   href: '#3',
-      //   title: '',
-      //   type: 'rect',
-      //   x:913.8689458689458 ,
-      //   y:903.6581196581196, width:155.71509971509965, height:119.97720797720797 
-      // },
       {
-        href: '#4',
-        title: '',
+        href: 'https://github.com/jolisdegats',
+        title: 'Github - Jolisdegats',
         type: 'polygon',
         points: "1243.17 1018.53 1263.59 1005.77 1278.91 987.897 1281.46 1021.08 1141.06 1018.53 1125.74 993.003 1128.3 860.262 1289.12 857.709 1263.59 875.578 1243.17 985.345 1220.19 1000.66",
       },
@@ -67,14 +47,6 @@ const BackgroundImage = () => {
         x:781.1282051282051 ,
         y:513.0940170940171, width:160.82051282051282, height:257.8233618233618 
       }, 
-    
-      {
-
-        href: '#5',
-        title: '',
-        type: 'polygon',
-        points: "1284.01 964.923 1268.7 998.108 1243.17 1021.08 1222.75 1003.21 1284.01 852.604 1296.77 732.627 1340.17 704.547 1391.23 717.311 1416.75 793.892 1455.04 890.895 1480.57 993.003 1480.57 1164.03 1439.73 1215.09 1406.54 1240.62 1335.07 1250.83 1337.62 1317.2 1465.25 1301.88 1447.38 1414.2 1337.62 1358.04 1271.25 1426.96 1266.14 1350.38 1235.51 1337.62 1179.35 1360.59 1187.01 1317.2 1209.98 1263.59 1171.69 1100.22 1255.93 1092.56",
-      },
       {
         href: '#6',
         title: '',
@@ -118,6 +90,7 @@ const BackgroundImage = () => {
       <MarkerLight/>
       <MarkerCoffee/>
       <MarkerFlowers/>
+      <MarkerMe/>
       <MarkerCat/>
       {svgData.shapes.map((shape, index) => {
         const shapeContent = <g>
@@ -141,7 +114,7 @@ const BackgroundImage = () => {
       </g>
         
        return (
-        <a className="cursor-pointer" key={index} onClick={shape.onClick} href={shape.href}  target="_self" title={shape.title}>
+        <a className="cursor-pointer" key={index} onClick={shape.onClick} href={shape.href}  target="_blank" title={shape.title}>
          {shapeContent}
         </a>
       )})}

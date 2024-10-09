@@ -81,11 +81,12 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
   }, [handleStateChange]);
 
   const handleBtnOff = useCallback(() => {
+    if(gameState !== 'OFF'){
     if (gameState !== 'END') {
       playCoffeeMachineOnOff();
     }
     resetGame({gameState: 'OFF'});
-    setGameState('OFF');
+    setGameState('OFF');}
   }, [gameState, playCoffeeMachineOnOff, resetGame]);
 
   const handleBtnOn = useCallback(() => {
@@ -173,7 +174,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
         <div className={styles.head}>
           <button 
             onClick={handleBtnCoffee}
-            className={classnames(styles.circle, { [styles['circle--active']]: gameState === 'RUN' })}
+            className={classnames(styles.circle, { [styles['circle--inactive']] : gameState === 'OFF', [styles['circle--active']]: gameState === 'RUN' })}
           />
           <button 
             onClick={handleBtnOff} 

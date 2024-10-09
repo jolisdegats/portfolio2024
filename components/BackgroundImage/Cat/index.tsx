@@ -5,18 +5,25 @@ import Shape, { type ShapeType } from '../Shape';
 import { useState, useCallback } from 'react'; // Added useCallback
 
 export const MarkerCat = () => {
-    const [play, { stop }] = useSound(catPurring);
+    const [play, { sound, stop }] = useSound(catPurring, {interrupt: true, volume: 0.7});
     const [isDragging, setIsDragging] = useState(false);
 
     const startDragging = useCallback(() => {
         setIsDragging(true);
-        play();
-    }, [play]);
+        play()
+         sound.fade(0, 0.7, 500);
+    }, [sound, play]);
 
     const stopDragging = useCallback(() => {
         setIsDragging(false);
-        stop();
-    }, [stop]);
+       
+        sound.fade(0.7, 0, 500);
+        stop()
+        //TODO
+        // setTimeout(() => {
+        //     stop()
+        // }, 1000);
+    }, [sound,stop]);
 
     const shape: ShapeType = {
         type:"rectangle",
@@ -40,8 +47,6 @@ export const MarkerCat = () => {
         height:148.05698005698014,
        
     }
-
-    console.log(isDragging)
     return (<Shape shape={shape} index="cat"/>
     )
 }
