@@ -27,12 +27,13 @@ export const MarkerMe = () => {
        <div className="text-white flex-1 pr-5">
         <p className="text-2xl font-bold">Hey, I&apos;m Julie</p>
         <small className="block mt-1 mb-6"><i>Driven by creativity and logic, now crafting digital experiences.</i></small>
-        
+        <div className="text-sm">
         <p>I’ve been hooked on technology ever since I got my first computer at 4 (blame my parents!), and that passion never faded. After spending years in marketing and strategy at startups, I craved something more hands-on and focused on problem-solving. That&apos;s when I made the switch to web development, diving into frontend and enjoying a bit of backend fun along the way!</p>
         <br/>
         <p>When I&apos;m not coding, you&apos;ll find me working on some DIY projects, solving escape rooms, or binge-watching anime. I have a soft spot for pasta and French cuisine (but please note that coriander is my sworn enemy).</p>
         <br/>
         <p>Ready to collaborate and create something amazing?</p>
+        </div>
         </div>
         <div className="relative flex-1 h-[500px] ml-2">
             {isAvatarImage ? <Image onClick={() => setIsAvatarImage(!isAvatarImage)} src={avatar.src} alt="avatar" fill objectFit="cover"/> :<Image onClick={() => setIsAvatarImage(!isAvatarImage)} src={me.src} alt="me" fill objectFit="cover"/>}

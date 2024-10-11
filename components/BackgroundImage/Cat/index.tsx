@@ -11,18 +11,13 @@ export const MarkerCat = () => {
     const startDragging = useCallback(() => {
         setIsDragging(true);
         play()
-         sound.fade(0, 0.7, 500);
+        sound.fade(0, 0.7, 1000);
     }, [sound, play]);
 
     const stopDragging = useCallback(() => {
         setIsDragging(false);
-       
-        sound.fade(0.7, 0, 500);
-        stop()
-        //TODO
-        // setTimeout(() => {
-        //     stop()
-        // }, 1000);
+        sound.fade(0.7, 0, 300);
+        return ()=> stop()
     }, [sound,stop]);
 
     const shape: ShapeType = {
