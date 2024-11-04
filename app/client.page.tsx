@@ -13,7 +13,6 @@ const ClientPage = () => {
       <button 
       onMouseDown={() => dispatch(toggleHelpMarkers())}
       onMouseUp={() => setTimeout(() => dispatch(toggleHelpMarkers()), 300)}
-      
       className="bg-white hover:bg-opacity-30 bg-opacity-0 rounded-md p-1.5 cursor-pointer text-white text-opacity-30 hover:text-opacity-100">
           <FaQuestionCircle className="text-xl " title="Help" />
         </button>
