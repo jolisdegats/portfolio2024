@@ -1,4 +1,4 @@
-import gifCat from '@/assets/gif-cat.gif';
+import gifCat from '@/assets/gif-cat.webp';
 import useSound from 'use-sound';
 import catPurring from '@/assets/sounds/cat-purring.mp3';
 import Shape, { type ShapeType } from '../Shape';

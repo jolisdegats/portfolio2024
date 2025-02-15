@@ -8,7 +8,8 @@ import { FaQuestionCircle, FaRegCopyright } from "react-icons/fa";
 
 const ClientPage = () => {
     const { dispatch } = useAppContext(); 
-    return <div className="relative"><BackgroundImage />
+    return <div className="relative">
+      <BackgroundImage />
       <div className="absolute bottom-5 right-5 flex space-x-1">
       <button 
       onMouseDown={() => dispatch(toggleHelpMarkers())}

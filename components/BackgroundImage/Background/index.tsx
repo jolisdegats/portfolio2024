@@ -1,15 +1,15 @@
 import Image from 'next/image';
 
-import imageUrl from '@/assets/main-background.png';
-import gifCode from '@/assets/gif-code.gif';
-import cloud1 from '@/assets/cloud1.png';
-import cloud2 from '@/assets/cloud2.png';
-import cloud3 from '@/assets/cloud3.png';
-import cloud4 from '@/assets/cloud4.png';
-import cloud5 from '@/assets/cloud5.png';
-import sea from '@/assets/sea.png';
-import seaclouds from '@/assets/seaclouds.png';
-import sky from '@/assets/sky.png';
+import imageUrl from '@/assets/main-background.webp';
+import gifCode from '@/assets/gif-code.webp';
+import cloud1 from '@/assets/cloud1.webp';
+import cloud2 from '@/assets/cloud2.webp';
+import cloud3 from '@/assets/cloud3.webp';
+import cloud4 from '@/assets/cloud4.webp';
+import cloud5 from '@/assets/cloud5.webp';
+import sea from '@/assets/sea.webp';
+import seaclouds from '@/assets/seaclouds.webp';
+import sky from '@/assets/sky.webp';
 import { useSpring, useSprings, animated } from 'react-spring';
 
 const Background = ({onLoad}: {onLoad: (isLoading: boolean) => void}) =>{
