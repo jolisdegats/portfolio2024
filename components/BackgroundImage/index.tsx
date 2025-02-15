@@ -11,14 +11,16 @@ import { MarkerMe } from './Me';
 import MarkerComputer from './Computer';
 import MarkerFridge from './Fridge';
 import MarkerPoster from './Poster';
+import { useState } from 'react';
 
 const BackgroundImage = () => {
+const [isBgLoading, setIsBgLoading] = useState(true);
 
   return (<>
-        <Background/>
+        <Background onLoad={setIsBgLoading}/>
 
 
-  <svg
+ {!isBgLoading && <svg
     className={styles['centered-svg']}
     width="100%"
     height="100%"
@@ -53,7 +55,7 @@ const BackgroundImage = () => {
       <MarkerFridge/>
       <MarkerPoster/>
       <MarkerComputer/>
-    </svg>
+    </svg>}
     </>
   );
 };
