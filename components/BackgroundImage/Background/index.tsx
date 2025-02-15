@@ -11,9 +11,11 @@ import sea from '../../../assets/sea.png';
 import seaclouds from '../../../assets/seaclouds.png';
 import sky from '../../../assets/sky.png';
 import { useSpring, useSprings, animated } from 'react-spring';
+import classNames from 'classnames';
+import { useState } from 'react';
 
 const Background = () =>{
-
+const [isLoading, setIsLoading] = useState(true);
 
 const getRandomDuration = () => {
     return Math.random() * 240 + 120; // Generates a random number between 120 and 360
@@ -77,7 +79,7 @@ return  <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
     />
   ))}
 </svg>
-      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover'/>
+      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className={classNames('object-cover', { 'z-[1000]': isLoading })} onLoadingComplete={() => setIsLoading(false)}/>
       <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
 </div>
 
