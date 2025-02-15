@@ -48,8 +48,8 @@ const seaCloudsPropsDelayed = useSpring({
   loop: true,
 });
 return  <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
-<Image rel="preload" src={sky} alt="sky" fill className='object-cover'/>
-<Image rel="preload" src={sea} alt="sea" fill className='object-cover'/>
+<Image priority src={sky} alt="sky" fill className='object-cover'/>
+<Image priority src={sea} alt="sea" fill className='object-cover'/>
 <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
   <AnimatedSVGImage
     href={seaclouds.src}
@@ -77,8 +77,8 @@ return  <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
     />
   ))}
 </svg>
-      <Image rel="preload" src={imageUrl} alt="imageUrl" fill className='object-cover'/>
-      <Image rel="preload" src={gifCode} alt="gifCode" fill className='object-cover'/>
+      <Image priority src={imageUrl} alt="imageUrl" fill className='object-cover'/>
+      <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
 </div>
 
 }
