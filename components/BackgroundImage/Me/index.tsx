@@ -3,7 +3,7 @@ import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
 import Modal from "@/components/Modal";
 import Image from "next/image";
-import avatar from "../../../assets/avatar.webp";
+import avatar from "@/assets/avatar.webp";
 export const MarkerMe = () => {
     const { dispatch } = useAppContext(); 
    
@@ -35,7 +35,7 @@ export const MarkerMe = () => {
            </div>
            <div className="lg:h-full w-full lg:w-1/2 order-2 lg:order-2">
              <div className="relative h-[300px] lg:h-full w-full">
-               <Image placeholder="blur" blurDataURL={avatar.src} src={avatar.src} alt="avatar" fill className="object-cover"/>
+               <Image src={avatar.src} alt="avatar" fill className="object-cover"/>
              </div>
            </div>
          </div>
