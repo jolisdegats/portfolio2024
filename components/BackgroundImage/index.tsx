@@ -18,7 +18,7 @@ const [isBgLoading, setIsBgLoading] = useState(true);
 
   return (<>
     <Background onLoad={setIsBgLoading}/>
- <svg
+    {!isBgLoading && <svg
     className={styles['centered-svg']}
     width="100%"
     height="100%"
@@ -53,7 +53,7 @@ const [isBgLoading, setIsBgLoading] = useState(true);
       <MarkerFridge/>
       <MarkerPoster/>
       <MarkerComputer/>
-    </svg>
+    </svg>}
     </>
   );
 };
