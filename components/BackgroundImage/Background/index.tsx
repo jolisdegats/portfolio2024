@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import imageUrl from '@/assets/main-background.png';
+import imageUrl from '../../../assets/main-background.png';
 import gifCode from '@/assets/gif-code.gif';
 import cloud1 from '../../../assets/cloud1.png';
 import cloud2 from '../../../assets/cloud2.png';
@@ -77,7 +77,7 @@ return  <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
     />
   ))}
 </svg>
-      <Image priority src={imageUrl} alt="imageUrl" fill className='object-cover'/>
+      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover'/>
       <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
 </div>
 
