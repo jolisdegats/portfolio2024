@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -58,4 +56,28 @@ main {
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
+}
+
+/* Replace the scrollbar styles with: */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: black transparent;
+}
+
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+  background-color: #000000;
+  border-radius: 4px;
+  -webkit-appearance: none;
+}
+
+/* Disable default scrollbar appearance */
+*::-webkit-scrollbar-thumb:vertical {
+  -webkit-appearance: none;
 }
