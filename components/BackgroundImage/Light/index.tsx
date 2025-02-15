@@ -26,4 +26,4 @@ const onClickLamp = () => {
 
 export const ImageLight = () => {
   const { state : {isLightOn} } = useAppContext(); 
-  return isLightOn && <image xlinkHref={lightOn.src}  />}
+  return <image xlinkHref={lightOn.src} className={isLightOn ? 'opacity-100' : 'opacity-0'} />}

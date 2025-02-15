@@ -1,8 +1,4 @@
 'use client'
-
-import imageUrl from '@/assets/main-background.png';
-import gifCode from '@/assets/gif-code.gif';
-
 import Background from '@/components/BackgroundImage/Background';
 import { ImageRadio, MarkerRadio } from '@/components/BackgroundImage/Radio';
 import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
@@ -18,7 +14,11 @@ import MarkerPoster from './Poster';
 
 const BackgroundImage = () => {
 
-  return (<svg
+  return (<>
+        <Background/>
+
+
+  <svg
     className={styles['centered-svg']}
     width="100%"
     height="100%"
@@ -36,9 +36,6 @@ const BackgroundImage = () => {
       </style>
     
         {/* IMAGES */}
-      <Background/>
-      <image xlinkHref={imageUrl.src}  />
-      <image xlinkHref={gifCode.src}  width="100%" height="100%" />
       <ImageCat />
       <ImageRadio />
       <ImagePhone />
@@ -57,6 +54,7 @@ const BackgroundImage = () => {
       <MarkerPoster/>
       <MarkerComputer/>
     </svg>
+    </>
   );
 };
 

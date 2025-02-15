@@ -54,5 +54,5 @@ return <>
 
 export const ImageRadio = () => {
     const { state : {isRadioOn} } = useAppContext(); 
-return isRadioOn && <image xlinkHref={radioOn.src} />
+return <image xlinkHref={radioOn.src} className={isRadioOn ? 'opacity-100' : 'opacity-0'} />
 }

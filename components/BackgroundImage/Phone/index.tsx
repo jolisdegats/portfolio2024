@@ -1,6 +1,6 @@
-import Shape, {  ShapeType } from "../Shape"
-import phoneOn from '../../../assets/phone.png'
-import {  togglePhone } from "@/lib/context";
+import Shape, { ShapeType } from "../Shape";
+import phoneOn from '../../../assets/phone.png';
+import { togglePhone } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 
 
@@ -20,4 +20,4 @@ export const MarkerPhone = () => {
 
 export const ImagePhone = ()=>{
     const { state : {isPhoneOn} } = useAppContext(); 
-   return  isPhoneOn && <image xlinkHref={phoneOn.src}  />}
+   return <image xlinkHref={phoneOn.src} className={isPhoneOn ? 'opacity-100' : 'opacity-0'} />}
