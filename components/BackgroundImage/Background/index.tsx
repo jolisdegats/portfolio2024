@@ -11,8 +11,6 @@ import sea from '@/assets/sea.webp';
 import seaclouds from '@/assets/seaclouds.webp';
 import sky from '@/assets/sky.webp';
 import { useSpring, useSprings, animated } from 'react-spring';
-import Head from 'next/head';
-import gifCat from '@/assets/gif-cat.webp';
 
 const Background = ({onLoad}: {onLoad: (isLoading: boolean) => void}) =>{
 const getRandomDuration = () => {
@@ -47,15 +45,7 @@ const seaCloudsPropsDelayed = useSpring({
   config: { duration: 500000, easing: (t) => t },
   loop: true,
 });
-return  <>
-<Head>
-<link
-  rel="preload"
-  href={gifCat.src}
-  as="image"
-/>
-</Head>
-<div className='z-[-10] absolute top-0 left-0 w-full h-full'>
+return <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
 <Image priority src={sky} alt="sky" fill className='object-cover'/>
 <Image priority src={sea} alt="sea" fill className='object-cover'/>
 <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -88,8 +78,6 @@ return  <>
       <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover' onLoad={() => onLoad(false)}  />
       <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
 </div>
-</>
-
 }
 
 export default Background;
