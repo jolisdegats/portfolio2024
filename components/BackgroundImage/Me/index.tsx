@@ -3,7 +3,7 @@ import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
 import Modal from "@/components/Modal";
 import Image from "next/image";
-import avatar from "@/assets/avatar.png";
+import avatar from "@/assets/avatar.webp";
 export const MarkerMe = () => {
     const { dispatch } = useAppContext(); 
    

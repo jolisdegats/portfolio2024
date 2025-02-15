@@ -17,10 +17,8 @@ const BackgroundImage = () => {
 const [isBgLoading, setIsBgLoading] = useState(true);
 
   return (<>
-        <Background onLoad={setIsBgLoading}/>
-
-
- {!isBgLoading && <svg
+    <Background onLoad={setIsBgLoading}/>
+    {!isBgLoading && <svg
     className={styles['centered-svg']}
     width="100%"
     height="100%"
@@ -28,7 +26,7 @@ const [isBgLoading, setIsBgLoading] = useState(true);
     viewBox="0 0 2688 1792"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-  >
+    >
          <style>
         {`
           .image-mapper-shape {

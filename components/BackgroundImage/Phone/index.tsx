@@ -1,5 +1,5 @@
 import Shape, { ShapeType } from "../Shape";
-import phoneOn from '../../../assets/phone.png';
+import phoneOn from '@/assets/phone.webp';
 import { togglePhone } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 

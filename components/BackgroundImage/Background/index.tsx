@@ -75,10 +75,7 @@ return  <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
     />
   ))}
 </svg>
-      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover' onLoad={() => {
-        console.log('loading complete')
-        onLoad(false)
-      }}  />
+      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover' onLoad={() => onLoad(false)}  />
       <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
 </div>
 

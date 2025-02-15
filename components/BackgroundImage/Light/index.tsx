@@ -1,5 +1,5 @@
 import Shape, { ShapeType } from "../Shape";
-import lightOn from '../../../assets/light.png';
+import lightOn from '@/assets/light.webp';
 import { toggleLight } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 import turnonlamp from "@/assets/sounds/turnonlamp.mp3";
