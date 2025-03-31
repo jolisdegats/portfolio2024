@@ -5,6 +5,7 @@ export type Action =
   | { type: 'TOGGLE_LIGHT' }
   | { type: 'TOGGLE_PHONE' }
   | { type: 'TOGGLE_HELP_MARKERS'}
+  | { type: 'TOGGLE_FRIDGE'}
   | { type: 'CHANGE_MODAL', payload : ToggleModalPayload }
 
 
@@ -18,6 +19,10 @@ export const toggleLight = (): Action => ({
 
 export const togglePhone = (): Action => ({
   type: 'TOGGLE_PHONE',
+});
+
+export const toggleFridge = (): Action => ({
+  type: 'TOGGLE_FRIDGE',
 });
 
 export const changeModal = (payload : ToggleModalPayload): Action => ({

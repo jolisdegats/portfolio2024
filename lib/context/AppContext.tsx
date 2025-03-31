@@ -8,6 +8,7 @@ export interface AppState {
   isRadioOn: boolean;
   isLightOn: boolean;
   isPhoneOn: boolean;
+  isFridgeOpen: boolean;
   modalOpen: {
     name: string | null;
   };
@@ -18,14 +19,18 @@ interface AppContextType {
   dispatch: React.Dispatch<any>;
 }
 
+
+const initialState: AppState = {
+  showHelpMarkers: false,
+  isRadioOn: false,
+  isLightOn: false,
+  isPhoneOn: false,
+  isFridgeOpen: false,
+  modalOpen: {name : null},
+}
+
 export const AppContext = createContext<AppContextType>({
-  state: {
-    showHelpMarkers: false,
-    isRadioOn: false,
-    isLightOn: false,
-    isPhoneOn: false,
-    modalOpen: {name : null},
-  },
+  state: initialState,
   dispatch: () => {},
 });
 
@@ -34,13 +39,7 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [state, dispatch] = useReducer(appReducer, {  
-    showHelpMarkers: false,
-    isRadioOn: false,
-    isLightOn: false,
-    isPhoneOn: false,
-    modalOpen: {name : null},
-  });
+    const [state, dispatch] = useReducer(appReducer, initialState);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

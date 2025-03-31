@@ -112,6 +112,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
         resetGame({});
         setNewObjective();
         setGameState('PAUSED');
+        playCoffeePouring()
       }
         if(gameState === 'PAUSED') {
           playCoffeePouring()
@@ -174,7 +175,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
         <div className={styles.head}>
           <button 
             onClick={handleBtnCoffee}
-            className={classnames(styles.circle, { [styles['circle--inactive']] : gameState === 'OFF', [styles['circle--active']]: gameState === 'RUN' })}
+            className={classnames(styles.circle, { [styles['circle--inactive']] : gameState === 'OFF', [styles['circle--active']]: gameState === 'RUN', [styles['circle--inviting']] : gameState === 'PAUSED' })}
           />
           <button 
             onClick={handleBtnOff} 
@@ -182,7 +183,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
           />
           <button 
             onClick={handleBtnOn} 
-            className={classnames(styles.choice, styles.choice2, { [styles['choice2--active']]: gameState !== 'OFF' })}
+            className={classnames(styles.choice, styles.choice2, { [styles['choice2--active']]: gameState !== 'OFF', [styles['choice2--inviting']] : gameState === 'OFF' })}
           />
         </div>
 
@@ -204,7 +205,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
           })}/>
 
           <div className={styles.muggContainer}>
-            {!['END'].includes(gameState) && (
+            {!['END', 'OFF'].includes(gameState) && (
               <Mug 
                 coffeeHeight={coffeeHeight} 
                 onClickOnMug={handleMugClick} 

@@ -37,15 +37,14 @@ export const MarkerCoffee = () => {
     <Modal handleClose={() => coffeMachineRef.current?.resetGame({gameState: 'OFF'})} name="coffee">
         <div className={styles.gameModal}>
             <div className={styles.gameInfo}>
-                <h2>Want some coffee?</h2>
-                <p>Let&apos;s play a little game. Start the coffee machine to start.</p>
-                <p>You must fill the mug with coffee.</p>
-                {gameState.objective > 0 && (
-                    <p>Fill the coffee cup to {gameState.objective}%</p>
+                <h2>Coffee Break?</h2>
+                <p>Time for a quick game!</p>
+                {!gameState.objective ? (
+                    <p>Press the power button to begin brewing.</p>
+                ) : (
+                    <p>Target: Fill the mug to <span className="font-bold">{gameState.objective}%</span></p>
                 )}
-                {gameState.result && (
-                    <p>{gameState.result}</p>
-                )}
+              
                
                 {gameState.gameState === 'END' && (
                     <div className={styles.endGameContainer}>
@@ -55,6 +54,9 @@ export const MarkerCoffee = () => {
                         </div>
                         </div>
                     </div>
+                )}
+                  {gameState.result && (
+                    <p>{gameState.result}</p>
                 )}
                 {gameState.message && (
                     <p className={styles.messageUnderMug}>{gameState.message}</p>

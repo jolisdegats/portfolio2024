@@ -4,6 +4,7 @@ import { Action } from "./ actions";
 import { AppState } from "./AppContext";
 
 const appReducer = (state: AppState, action: Action): AppState => {
+  console.log('action', action);
   switch (action.type) {
     case 'TOGGLE_HELP_MARKERS':
       return { ...state, showHelpMarkers: !state.showHelpMarkers };
@@ -14,7 +15,9 @@ const appReducer = (state: AppState, action: Action): AppState => {
     case 'TOGGLE_PHONE':
       return { ...state, isPhoneOn: !state.isPhoneOn };
       case 'CHANGE_MODAL':
-        return { ...state, modalOpen: action.payload };
+          return { ...state, modalOpen: action.payload };
+      case 'TOGGLE_FRIDGE':
+          return { ...state, isFridgeOpen: !state.isFridgeOpen };
     default:
       return state;
   }

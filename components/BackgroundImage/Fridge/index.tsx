@@ -1,13 +1,35 @@
-import Shape from "../Shape"
-import type { ShapeType } from "../Shape"
+import { useAppContext } from "@/lib/hooks";
+import Shape from "../Shape";
+import type { ShapeType } from "../Shape";
+import { useEffect } from "react";
+import { toggleFridge } from "@/lib/context";
+import fridgeOpen from '@/assets/fridge2.png';
+
 
 const MarkerFridge = () => {
+
+  const { state : {isFridgeOpen}, dispatch } = useAppContext();
+
+  useEffect(() => {
+    if(isFridgeOpen) {
+      console.log('fridge on');
+    } else {
+      console.log('fridge off');
+    }
+  }, [isFridgeOpen]);
+
     const shape : ShapeType = {
-        type: 'rectangle',
-        x:781.1282051282051 ,
-        y:513.0940170940171, width:160.82051282051282, height:257.8233618233618 
+      onClick: () => dispatch(toggleFridge()),
+      type: 'polygon',
+      points: "1723.08 781.128 1832.84 763.259 2151.93 765.812 2139.17 1243.17 2037.06 1217.64 2037.06 1460.15 1835.4 1452.49 1720.52 1368.25",
+
       }
-      return <Shape shape={shape} index="fridge"/>
+      return (
+        <>
+       {isFridgeOpen && <image  xlinkHref={fridgeOpen.src} className="h-full w-full absolute top-0 right-0"/>}
+          <Shape shape={shape} index="fridge"/>
+        </>
+      )
 }
 
 export default MarkerFridge;

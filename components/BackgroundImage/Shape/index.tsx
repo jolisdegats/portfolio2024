@@ -32,6 +32,7 @@ const markerColor = '#75BABD';
 const Shape = ({ shape, index }: ShapeLinkProps) => {
   const { state: { showHelpMarkers } } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
+  const [isDisplayed, setIsDisplayed] = useState(false);
 
   useEffect(() => {
     setIsVisible(showHelpMarkers);
@@ -43,6 +44,17 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
   const markerY = shape.type === 'rectangle' 
     ? shape.y + shape.height / 2 
     : getPolygonCenter(shape.points).y;
+    
+
+    useEffect(() => {
+        if (!isVisible && isDisplayed) {
+            setTimeout(() => setIsDisplayed(false), 500);
+        }
+        if(isVisible && !isDisplayed) {
+          setIsDisplayed(true)
+        }
+    }, [isVisible, isDisplayed]);
+
 
   return (
     <a className="cursor-pointer" key={index} target="_self" {...shape} style={{zIndex : 10, ...shape.style}}>
@@ -66,7 +78,7 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
         )}
         <g 
           transform={`translate(${markerX}, ${markerY})`} 
-          className={`pointer-events-none ${isVisible ? styles.visible : styles.hidden}`}
+          className={`pointer-events-none ${isVisible ? styles.visible : styles.hidden} ${isDisplayed ?  '' : 'hidden'}`}
         >
           <circle r="20" fill={markerColor} className={styles.pulse} />
           <circle r="10" fill={markerColor} />

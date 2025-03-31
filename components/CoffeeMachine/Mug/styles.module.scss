@@ -1,6 +1,9 @@
  .muggContainer{
   height: 90px;
-  cursor: pointer;
+  cursor: default;
+  &--active {
+    cursor: pointer;
+  }
  }
 
   .coffee {

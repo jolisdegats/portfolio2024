@@ -12,7 +12,7 @@ interface MugProps {
 
 const Mug = ({coffeeHeight, onClickOnMug, mugRef, coffeeRef, gameState = 'RUN' }: MugProps) => {
   return (
-    <button onClick={onClickOnMug} className={styles.muggContainer}>
+    <button onClick={onClickOnMug} className={classnames(styles.muggContainer, { [styles['muggContainer--active']]: gameState !== 'OFF' && coffeeHeight > 0 })}>
       <div ref={mugRef} className={styles.mugg} />
       <div 
         ref={coffeeRef}   
