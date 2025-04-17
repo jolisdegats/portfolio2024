@@ -9,8 +9,6 @@ import { ImageCat, MarkerCat } from './Cat';
 import MarkerFlowers from './Flowers';
 import { MarkerMe } from './Me';
 import MarkerComputer from './Computer';
-import MarkerFridge from './Fridge';
-import MarkerPoster from './Poster';
 import { useState } from 'react';
 import Head from 'next/head';
 import sky from '@/assets/sky.webp';
@@ -77,8 +75,8 @@ const [isBgLoading, setIsBgLoading] = useState(true);
       <MarkerFlowers/>
       <MarkerMe/>
       <MarkerCat/>
-      <MarkerFridge/>
-      <MarkerPoster/>
+      {/* <MarkerFridge/> */}
+      {/* <MarkerPoster/> */}
       <MarkerComputer/>
     </svg>}
     </>

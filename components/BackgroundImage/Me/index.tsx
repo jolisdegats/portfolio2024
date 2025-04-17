@@ -35,7 +35,7 @@ export const MarkerMe = () => {
                <br/>
                <p>When I&apos;m not coding, you&apos;ll find me working on some DIY projects, solving escape rooms, or binge-watching anime. I have a soft spot for pasta and French cuisine (but please note that coriander is my sworn enemy).</p>
                <br/>
-               <p>Ready to connect and create awesome things together?</p>
+               <p>Ready to connect and create awesome things together!</p>
              </div>
            </div>
            <div className="lg:h-full w-full lg:w-1/2 order-2 lg:order-2">

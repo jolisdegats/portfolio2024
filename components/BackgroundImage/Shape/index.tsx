@@ -57,7 +57,7 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
 
 
   return (
-    <a className="cursor-pointer" key={index} target="_self" {...shape} style={{zIndex : 10, ...shape.style}}>
+    <a className="cursor-pointer" key={index} target="_blank" {...shape} style={{zIndex : 10, ...shape.style}}>
       <g>
         {shape.type === 'rectangle' && (
           <rect

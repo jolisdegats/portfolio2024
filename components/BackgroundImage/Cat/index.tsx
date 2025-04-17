@@ -4,25 +4,29 @@ import catPurring from '@/assets/sounds/cat-purring.mp3';
 import Shape, { type ShapeType } from '../Shape';
 import { useState, useCallback } from 'react'; // Added useCallback
 
+const VOLUME = 1;
+
 export const MarkerCat = () => {
-    const [play, { sound, stop }] = useSound(catPurring, {interrupt: true, volume: 0.7});
+    const [play, { sound, stop }] = useSound(catPurring, {interrupt: true, volume: VOLUME});
     const [isDragging, setIsDragging] = useState(false);
 
     const startDragging = useCallback(() => {
         setIsDragging(true);
         play()
-        sound.fade(0, 0.7, 1000);
+        sound.fade(0, VOLUME, 300);
     }, [sound, play]);
 
     const stopDragging = useCallback(() => {
         setIsDragging(false);
-        sound.fade(0.7, 0, 300);
+        sound.fade(VOLUME, 0, 300);
         return ()=> stop()
     }, [sound,stop]);
 
     const shape: ShapeType = {
         type:"rectangle",
         style: {cursor: isDragging ? "grabbing" : "grab"},
+        onTouchStart: startDragging,
+        onTouchEnd: stopDragging,
         onMouseDown: startDragging,
         onMouseUp: stopDragging,
         onMouseLeave: stopDragging,

@@ -75,8 +75,8 @@ return <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
     />
   ))}
 </svg>
-      <Image placeholder='blur' priority src={imageUrl} alt="imageUrl" fill className='object-cover' onLoad={() => onLoad(false)}  />
-      <Image priority src={gifCode} alt="gifCode" fill className='object-cover'/>
+      <Image placeholder='blur' unoptimized priority src={imageUrl} alt="imageUrl" fill className='object-cover' onLoad={() => onLoad(false)}  />
+      <Image priority src={gifCode}  alt="gifCode" fill className='object-cover'/>
 </div>
 }
 
