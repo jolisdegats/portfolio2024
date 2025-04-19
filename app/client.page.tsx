@@ -2,12 +2,30 @@
 
 import BackgroundImage from "@/components/BackgroundImage";
 import Credits from "@/components/Credits";
-import { toggleHelpMarkers, changeModal } from "@/lib/context";
+import { toggleHelpMarkers, changeModal, initializeSounds } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 import { FaQuestionCircle, FaRegCopyright } from "react-icons/fa";
+import { useEffect } from 'react';
 
 const ClientPage = () => {
     const { dispatch } = useAppContext(); 
+    
+    useEffect(() => {
+        const handleFirstInteraction = () => {
+            dispatch(initializeSounds());
+            document.removeEventListener('click', handleFirstInteraction);
+            document.removeEventListener('touchstart', handleFirstInteraction);
+        };
+
+        document.addEventListener('click', handleFirstInteraction);
+        document.addEventListener('touchstart', handleFirstInteraction);
+
+        return () => {
+            document.removeEventListener('click', handleFirstInteraction);
+            document.removeEventListener('touchstart', handleFirstInteraction);
+        };
+    }, [dispatch]);
+
     return <div className="relative">
       <BackgroundImage />
       <div className="absolute bottom-5 right-5 flex space-x-1">

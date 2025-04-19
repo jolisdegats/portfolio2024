@@ -15,6 +15,9 @@ const MarkerFlowers: React.FC = () => {
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current || !isModalOpen) return;
 
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+
     const pointer = {
       x: 0.66,
       y: 0.3,
@@ -33,7 +36,7 @@ const MarkerFlowers: React.FC = () => {
 
     const init = () => {
       renderer = new THREE.WebGLRenderer({
-        canvas: canvasRef.current!,
+        canvas: canvas,
         alpha: true,
       });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -44,8 +47,8 @@ const MarkerFlowers: React.FC = () => {
       clock = new THREE.Clock();
 
       renderTargets = [
-        new THREE.WebGLRenderTarget(containerRef.current!.clientWidth, containerRef.current!.clientHeight),
-        new THREE.WebGLRenderTarget(containerRef.current!.clientWidth, containerRef.current!.clientHeight),
+        new THREE.WebGLRenderTarget(container.clientWidth, container.clientHeight),
+        new THREE.WebGLRenderTarget(container.clientWidth, container.clientHeight),
       ];
 
       createPlane();
@@ -58,7 +61,7 @@ const MarkerFlowers: React.FC = () => {
           u_stop_time: { value: 0 },
           u_stop_randomizer: { value: new THREE.Vector2(Math.random(), Math.random()) },
           u_cursor: { value: new THREE.Vector2(pointer.x, pointer.y) },
-          u_ratio: { value: containerRef.current!.clientWidth / containerRef.current!.clientHeight },
+          u_ratio: { value: container.clientWidth / container.clientHeight },
           u_texture: { value: null },
           u_clean: { value: 1 },
         },
@@ -75,8 +78,8 @@ const MarkerFlowers: React.FC = () => {
     };
 
     const updateSize = () => {
-      const width = containerRef.current!.clientWidth;
-      const height = containerRef.current!.clientHeight;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
       
       if (shaderMaterial && shaderMaterial.uniforms) {
         shaderMaterial.uniforms.u_ratio.value = width / height;
@@ -126,7 +129,7 @@ const MarkerFlowers: React.FC = () => {
     };
 
     const handleClick = (e: MouseEvent) => {
-      const rect = canvasRef.current!.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       pointer.x = (e.clientX - rect.left) / rect.width;
       pointer.y = (e.clientY - rect.top) / rect.height;
       pointer.clicked = true;
@@ -136,11 +139,25 @@ const MarkerFlowers: React.FC = () => {
     render();
 
     window.addEventListener('resize', handleResize);
-    canvasRef.current.addEventListener('click', handleClick);
+    canvas.addEventListener('click', handleClick);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      canvasRef.current?.removeEventListener('click', handleClick);
+      canvas.removeEventListener('click', handleClick);
+      
+      // Clean up Three.js resources
+      if (renderer) {
+        renderer.dispose();
+      }
+      if (renderTargets) {
+        renderTargets.forEach(rt => rt.dispose());
+      }
+      if (shaderMaterial) {
+        shaderMaterial.dispose();
+      }
+      if (basicMaterial) {
+        basicMaterial.dispose();
+      }
     };
   }, [isModalOpen]);
 

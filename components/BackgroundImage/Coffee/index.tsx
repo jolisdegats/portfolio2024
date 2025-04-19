@@ -1,28 +1,28 @@
 import Shape, { ShapeType } from "../Shape";
 import { useAppContext } from "@/lib/hooks";
-import { changeModal } from "@/lib/context/ actions";
 import mug from '@/assets/sounds/mug.mp3';
 import Modal from "@/components/Modal";
+import { changeModal } from "@/lib/context/ actions";
 import CoffeeMachine, { type CoffeeMachineRef, type HandleStateChange } from "@/components/CoffeeMachine";
 import styles from "./styles.module.scss";
 import { useRef, useState } from "react";
 import Mug from "@/components/CoffeeMachine/Mug";
-import { useLazySound } from "@/lib/hooks/useLazySound";
+import { useSoundManager } from "@/lib/hooks/useSoundManager";
+
 export const MarkerCoffee = () => {
     const { dispatch } = useAppContext(); 
-    const { play } = useLazySound(mug);
+    const { play } = useSoundManager(mug, { volume: 0.8 });
     const coffeMachineRef = useRef<CoffeeMachineRef>(null);
     const [gameState, setGameState] = useState<HandleStateChange>({ gameState: 'OFF', objective: 0, message: '', result: '', coffeeHeight: 0 });
-
-    const onClickOnMug = () => {
-        play();
-        dispatch(changeModal({name : "coffee"}));
-    }
 
     const handleStateChange = (newState: Partial<HandleStateChange>) => {
         setGameState(prevState => ({ ...prevState, ...newState }));
     };
 
+    const onClickOnMug = () => {
+        play();
+        dispatch(changeModal({name : "coffee"}));
+    }
     const shape : ShapeType= {
         type:"rectangle",
         onClick:onClickOnMug,
@@ -66,6 +66,6 @@ export const MarkerCoffee = () => {
             </div>
         </div>
     </Modal>
-    <Shape shape={shape} index="phone"/>
+    <Shape shape={shape} index="coffee"/>
     </>
 }

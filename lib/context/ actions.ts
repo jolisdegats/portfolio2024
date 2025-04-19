@@ -6,6 +6,7 @@ export type Action =
   | { type: 'TOGGLE_PHONE' }
   | { type: 'TOGGLE_HELP_MARKERS'}
   | { type: 'TOGGLE_FRIDGE'}
+  | { type: 'INITIALIZE_SOUNDS'}
   | { type: 'CHANGE_MODAL', payload : ToggleModalPayload }
 
 
@@ -32,4 +33,8 @@ export const changeModal = (payload : ToggleModalPayload): Action => ({
 
 export const toggleHelpMarkers = (): Action => ({
   type: 'TOGGLE_HELP_MARKERS'
+});
+
+export const initializeSounds = (): Action => ({
+  type: 'INITIALIZE_SOUNDS',
 });

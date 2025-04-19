@@ -6,7 +6,7 @@ import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
 import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
 import mugServed from '@/assets/sounds/mug-served.mp3';
 import Mug from './Mug';
-import { useLazySound } from '@/lib/hooks/useLazySound';
+import { useSoundManager } from '@/lib/hooks/useSoundManager';
 
 export interface HandleStateChange {
   gameState: GameState;
@@ -35,10 +35,10 @@ interface ResetGameParams {
 const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handleStateChange, hideControls = false }, ref) => {
   const coffeeRef = useRef<HTMLDivElement>(null);
   const mugRef = useRef<HTMLDivElement>(null);
-  const { play: playCoffeeMachineOnOff } = useLazySound(coffeeMachineOnOff);
-  const { play: playCoffeePouring, stop: stopCoffeePouringSound } = useLazySound(coffeePouring);
-  const { play: playCoffeePouringEnd } = useLazySound(coffeePouringEnd);
-  const { play: playMugServed } = useLazySound(mugServed);
+  const { play: playCoffeeMachineOnOff } = useSoundManager(coffeeMachineOnOff, { volume: 0.8 });
+  const { play: playCoffeePouring, stop: stopCoffeePouringSound } = useSoundManager(coffeePouring, { volume: 1 });
+  const { play: playCoffeePouringEnd } = useSoundManager(coffeePouringEnd, { volume: 1 });
+  const { play: playMugServed } = useSoundManager(mugServed, { volume: 0.5 });
 
   const [gameState, setGameState] = useState<GameState>('OFF');
   const [objective, setObjective] = useState(0);

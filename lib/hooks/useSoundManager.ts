@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import useSound from 'use-sound';
 
-export function useLazySound(soundPath: string, options = {}) {
+export function useSoundManager(soundPath: string, options = {}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [play, { sound, stop }] = useSound(soundPath, {
     ...options,
@@ -10,10 +10,14 @@ export function useLazySound(soundPath: string, options = {}) {
 
   const loadSound = useCallback(() => {
     if (!isLoaded) {
-      play();
-      stop();
+      const audio = new Audio(soundPath);
+      audio.addEventListener('canplaythrough', () => {
+        setIsLoaded(true);
+        audio.remove();
+      });
+      audio.load();
     }
-  }, [isLoaded, play, stop]);
+  }, [isLoaded, soundPath]);
 
   return {
     play,

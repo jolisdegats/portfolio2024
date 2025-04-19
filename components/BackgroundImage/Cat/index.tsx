@@ -1,32 +1,36 @@
 import gifCat from '@/assets/gif-cat.webp';
-import { useLazySound } from '@/lib/hooks/useLazySound';
+import { useSoundManager } from '@/lib/hooks/useSoundManager';
 import catPurring from '@/assets/sounds/cat-purring.mp3';
-import Shape, { type ShapeType } from '../Shape';
+import Shape, { type ShapeType } from '@/components/BackgroundImage/Shape';
 import { useState, useCallback } from 'react';
 
-const VOLUME = 0.3;
+const VOLUME = 0.2;
 
 export const MarkerCat = () => {
-    const { play, sound, stop, isLoaded, loadSound } = useLazySound(catPurring, { interrupt: true, volume: VOLUME });
+    const { play, stop, sound, isLoaded, loadSound } = useSoundManager(catPurring, { interrupt: true, loop: true, volume: VOLUME });
     const [isDragging, setIsDragging] = useState(false);
 
     const startDragging = useCallback(() => {
         setIsDragging(true);
         if (isLoaded) {
             play();
-            sound.fade(0, VOLUME, 300);
+            if (sound) {
+                sound.fade(0, VOLUME, 300);
+            }
         } else {
             loadSound();
             play();
-            sound.fade(0, VOLUME, 300);
+            if (sound) {
+                sound.fade(0, VOLUME, 300);
+            }
         }
     }, [sound, play, isLoaded, loadSound]);
 
     const stopDragging = useCallback(() => {
         setIsDragging(false);
-        if (isLoaded) {
+        if (isLoaded && sound) {
             sound.fade(VOLUME, 0, 300);
-            return () => stop();
+            setTimeout(() => stop(), 300);
         }
     }, [sound, stop, isLoaded]);
 

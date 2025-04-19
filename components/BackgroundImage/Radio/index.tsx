@@ -1,70 +1,131 @@
 import Shape, { ShapeType } from "../Shape";
-import radioMusicHappyChildren from '@/assets/sounds/happy-children.mp3';
-import radioMusicShy from '@/assets/sounds/shy.mp3';
-import radioMusicSmoothOperator from '@/assets/sounds/smooth-operator.mp3';
-import radioMusicDreams from '@/assets/sounds/dreams.mp3';
 import radioTuning from '@/assets/sounds/tuning-radio.mp3';
 import radioSwitch from '@/assets/sounds/radio-switch.mp3';
 import radioOn from '@/assets/radio-on.webp';
-import { toggleRadio } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
-import { useState, useCallback } from 'react';
-import { useLazySound } from '@/lib/hooks/useLazySound';
+import { useState, useCallback, memo, useRef, useEffect } from 'react';
+import { useSoundManager } from '@/lib/hooks/useSoundManager';
+import { toggleRadio } from '@/lib/context';
 
-export const MarkerRadio = () => {
+
+type TrackName = 'happyChildren' | 'shy' | 'smoothOperator' | 'dreams';
+type Track = { play: () => void; stop: () => void };
+type Tracks = Record<TrackName, Track>;
+
+export const MarkerRadio = memo(() => {
     const { state: { isRadioOn }, dispatch } = useAppContext();
     const [currentMusicIndex, setCurrentMusicIndex] = useState(-1);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const currentTrack = useRef<TrackName | null>(null);
+    const isPlaying = useRef(false);
     
-    const { sound: soundHappyChildren, loadSound: loadHappyChildren, isLoaded: isHappyChildrenLoaded } = useLazySound(radioMusicHappyChildren);
-    const { sound: soundShy, loadSound: loadShy, isLoaded: isShyLoaded } = useLazySound(radioMusicShy);
-    const { sound: soundSmoothOperator, loadSound: loadSmoothOperator, isLoaded: isSmoothOperatorLoaded } = useLazySound(radioMusicSmoothOperator);
-    const { sound: soundDreams, loadSound: loadDreams, isLoaded: isDreamsLoaded } = useLazySound(radioMusicDreams);
+    const { play: playSwitch } = useSoundManager(radioSwitch, {
+        volume: 0.25
+    });
     
-    const { play: playSwitch, stop: stopSwitch } = useLazySound(radioSwitch, { volume: 0.25 });
-    const { play: playTuning, stop: stopTuning } = useLazySound(radioTuning, { volume: 0.5 });
+    const { play: playTuning, stop: stopTuning } = useSoundManager(radioTuning, {
+        volume: 0.5
+    });
 
-    const stopAllMusics = useCallback(() => {
-        [soundHappyChildren, soundShy, soundSmoothOperator, soundDreams].forEach(sound => {
-            if (sound) sound.stop();
-        });
-    }, [soundHappyChildren, soundShy, soundSmoothOperator, soundDreams]);
+    const tracks = useRef<Tracks>({
+        happyChildren: { play: () => {}, stop: () => {} },
+        shy: { play: () => {}, stop: () => {} },
+        smoothOperator: { play: () => {}, stop: () => {} },
+        dreams: { play: () => {}, stop: () => {} }
+    });
 
-    const playMusicByIndex = useCallback((index: number) => {
-        const musicArray = [soundHappyChildren, soundShy, soundSmoothOperator, soundDreams];
-        const currentSound = musicArray[index];
-        if (currentSound) {
-            currentSound.play();
-        }
-    }, [soundHappyChildren, soundShy, soundSmoothOperator, soundDreams]);
 
-    const handleRadioClick = () => {
+    useEffect(() => {
+        const loadSounds = async () => {
+            try {
+                const happyChildrenModule = await import('@/assets/sounds/radio-music-happy-children.mp3');
+                const shyModule = await import('@/assets/sounds/radio-music-shy.mp3');
+                const smoothOperatorModule = await import('@/assets/sounds/radio-music-smooth-operator.mp3');
+                const dreamsModule = await import('@/assets/sounds/radio-music-dreams.mp3');
+                
+                const happyChildrenAudio = new Audio(happyChildrenModule.default);
+                const shyAudio = new Audio(shyModule.default);
+                const smoothOperatorAudio = new Audio(smoothOperatorModule.default);
+                const dreamsAudio = new Audio(dreamsModule.default);
+                
+                happyChildrenAudio.volume = 0.5;
+                shyAudio.volume = 0.5;
+                smoothOperatorAudio.volume = 0.5;
+                dreamsAudio.volume = 0.5;
+                
+                tracks.current = {
+                    happyChildren: { 
+                        play: () => happyChildrenAudio.play(), 
+                        stop: () => happyChildrenAudio.pause() 
+                    },
+                    shy: { 
+                        play: () => shyAudio.play(), 
+                        stop: () => shyAudio.pause() 
+                    },
+                    smoothOperator: { 
+                        play: () => smoothOperatorAudio.play(), 
+                        stop: () => smoothOperatorAudio.pause() 
+                    },
+                    dreams: { 
+                        play: () => dreamsAudio.play(), 
+                        stop: () => dreamsAudio.pause() 
+                    }
+                };
+            } catch (error) {
+                console.error('Failed to load sound files:', error);
+            }
+        };
+        
+        loadSounds();
+    }, []);
+
+    const handleRadioClick = useCallback(() => {
         dispatch(toggleRadio());
-        if (isRadioOn) {
-            playSwitch();
-            stopTuning();
-            stopAllMusics();
-            setCurrentMusicIndex(-1);
-            setIsTransitioning(false);
-            return () => stopSwitch();
+        if (isPlaying.current) {
+            if (currentTrack.current) {
+                tracks.current[currentTrack.current].stop();
+            }
+            isPlaying.current = false;
+            playSwitch()
         } else {
             playSwitch();
-            playTuning();
-            if (!isHappyChildrenLoaded) {
-                loadHappyChildren();
-            }
-            setCurrentMusicIndex(0);
-            setIsTransitioning(true);
-            if (soundHappyChildren) {
-                soundHappyChildren.play();
-            }
             setTimeout(() => {
-                stopTuning();
-                setIsTransitioning(false);
-            }, 2000);
-            return () => stopSwitch();
+                const trackNames = Object.keys(tracks.current) as TrackName[];
+                const randomTrack = trackNames[Math.floor(Math.random() * trackNames.length)];
+                currentTrack.current = randomTrack;
+                tracks.current[randomTrack].play();
+                isPlaying.current = true;
+            }, 300);
         }
-    };
+    }, [playSwitch, dispatch]);
+
+
+    const stopAllMusics = useCallback(() => {
+        Object.values(tracks.current).forEach(track => track.stop());
+        isPlaying.current = false;
+        currentTrack.current = null;
+    }, []);
+
+
+    const loadTrack = useCallback((trackName: TrackName) => {
+        if (tracks.current[trackName]) {
+            return tracks.current[trackName];
+        }
+        return null;
+    }, []);
+
+
+    const playMusicByIndex = useCallback((index: number) => {
+        const trackNames = Object.keys(tracks.current) as TrackName[];
+        if (index >= 0 && index < trackNames.length) {
+            const trackName = trackNames[index];
+            stopAllMusics();
+            tracks.current[trackName].play();
+            currentTrack.current = trackName;
+            isPlaying.current = true;
+            setCurrentMusicIndex(index);
+        }
+    }, [stopAllMusics]);
 
     const handleChangeMusic = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -77,20 +138,7 @@ export const MarkerRadio = () => {
             const nextIndex = (currentMusicIndex + 1) % 4;
             setCurrentMusicIndex(nextIndex);
             
-            switch (nextIndex) {
-                case 0:
-                    if (!isHappyChildrenLoaded) loadHappyChildren();
-                    break;
-                case 1:
-                    if (!isShyLoaded) loadShy();
-                    break;
-                case 2:
-                    if (!isSmoothOperatorLoaded) loadSmoothOperator();
-                    break;
-                case 3:
-                    if (!isDreamsLoaded) loadDreams();
-                    break;
-            }
+            loadTrack(`happyChildren`);
             
             playMusicByIndex(nextIndex);
             setTimeout(() => {
@@ -124,9 +172,12 @@ export const MarkerRadio = () => {
         <Shape shape={shape} index="radio" />
         {isRadioOn && <Shape shape={shapeChangeMusic} index="changeMusic" />}
     </>;
-};
+});
 
-export const ImageRadio = () => {
+export const ImageRadio = memo(() => {
     const { state: { isRadioOn } } = useAppContext();
     return <image xlinkHref={radioOn.src} className={isRadioOn ? 'opacity-100' : 'opacity-0'} />;
-};
+});
+
+MarkerRadio.displayName = 'MarkerRadio';
+ImageRadio.displayName = 'ImageRadio';
