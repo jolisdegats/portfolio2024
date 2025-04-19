@@ -4,7 +4,7 @@ import catPurring from '@/assets/sounds/cat-purring.mp3';
 import Shape, { type ShapeType } from '../Shape';
 import { useState, useCallback } from 'react'; // Added useCallback
 
-const VOLUME = 1;
+const VOLUME = 2;
 
 export const MarkerCat = () => {
     const [play, { sound, stop }] = useSound(catPurring, {interrupt: true, volume: VOLUME});

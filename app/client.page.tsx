@@ -12,6 +12,8 @@ const ClientPage = () => {
       <BackgroundImage />
       <div className="absolute bottom-5 right-5 flex space-x-1">
       <button 
+      onTouchStart={() => dispatch(toggleHelpMarkers())}
+      onTouchEnd={() => setTimeout(() => dispatch(toggleHelpMarkers()), 300)}
       onMouseDown={() => dispatch(toggleHelpMarkers())}
       onMouseUp={() => setTimeout(() => dispatch(toggleHelpMarkers()), 300)}
       className="bg-white hover:bg-opacity-30 bg-opacity-0 rounded-md p-1.5 cursor-pointer text-white text-opacity-30 hover:text-opacity-100">
