@@ -8,7 +8,7 @@ const playfair = Playfair_Display({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jolisdegats.dev'),
-  title: "Jolisdegats' Portfolio",
+  title: "Jolisdegats - Fullstack web dev Javascript",
   description: "Ideas, Code and Coffee",
   icons: {
     icon: [
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Jolisdegats' Portfolio",
+    title: "Jolisdegats - Fullstack web dev Javascript",
     description: "Ideas, Code and Coffee",
-    siteName: "Jolisdegats' Portfolio",
+    siteName: "Jolisdegats - Fullstack web dev Javascript",
     images: [
       {
         url: '/og-image.png',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Jolisdegats' Portfolio",
+    title: "Jolisdegats - Fullstack web dev Javascript",
     description: "Ideas, Code and Coffee",
     images: ['/og-image.png'],
   },
