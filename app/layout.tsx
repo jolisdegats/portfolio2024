@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/lib/context";
@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 const playfair = Playfair_Display({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://jolisdegats.dev'),
   title: "Jolisdegats' Portfolio",
   description: "Ideas, Code and Coffee",
   icons: {
@@ -22,7 +23,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jolisdegats' Portfolio",
     description: "Ideas, Code and Coffee",
-    url: 'https://jolisdegats.dev',
     siteName: "Jolisdegats' Portfolio",
     images: [
       {
