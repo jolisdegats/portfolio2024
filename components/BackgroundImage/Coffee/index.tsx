@@ -1,17 +1,16 @@
 import Shape, { ShapeType } from "../Shape";
 import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
-import useSound from "use-sound";
 import mug from '@/assets/sounds/mug.mp3';
 import Modal from "@/components/Modal";
 import CoffeeMachine, { type CoffeeMachineRef, type HandleStateChange } from "@/components/CoffeeMachine";
 import styles from "./styles.module.scss";
 import { useRef, useState } from "react";
 import Mug from "@/components/CoffeeMachine/Mug";
-
+import { useLazySound } from "@/lib/hooks/useLazySound";
 export const MarkerCoffee = () => {
     const { dispatch } = useAppContext(); 
-    const [play] = useSound(mug);
+    const { play } = useLazySound(mug);
     const coffeMachineRef = useRef<CoffeeMachineRef>(null);
     const [gameState, setGameState] = useState<HandleStateChange>({ gameState: 'OFF', objective: 0, message: '', result: '', coffeeHeight: 0 });
 

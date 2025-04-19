@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import styles from './styles.module.scss';
 import classnames from "classnames";
-import useSound from 'use-sound';
-import coffeeMachineOnOff from '../../assets/sounds/coffee-machine-on-off.mp3';
-import coffeePouring from '../../assets/sounds/coffee-pouring.mp3';
-import coffeePouringEnd from '../../assets/sounds/coffee-pouring-end.mp3';
-import mugServed from '../../assets/sounds/mug-served.mp3';
+import coffeeMachineOnOff from '@/assets/sounds/coffee-machine-on-off.mp3';
+import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
+import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
+import mugServed from '@/assets/sounds/mug-served.mp3';
 import Mug from './Mug';
+import { useLazySound } from '@/lib/hooks/useLazySound';
 
 export interface HandleStateChange {
   gameState: GameState;
@@ -35,10 +35,10 @@ interface ResetGameParams {
 const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handleStateChange, hideControls = false }, ref) => {
   const coffeeRef = useRef<HTMLDivElement>(null);
   const mugRef = useRef<HTMLDivElement>(null);
-  const [playCoffeeMachineOnOff] = useSound(coffeeMachineOnOff);
-  const [playCoffeePouring, { stop: stopCoffeePouringSound }] = useSound(coffeePouring);
-  const [playCoffeePouringEnd] = useSound(coffeePouringEnd);
-  const [playMugServed] = useSound(mugServed);
+  const { play: playCoffeeMachineOnOff } = useLazySound(coffeeMachineOnOff);
+  const { play: playCoffeePouring, stop: stopCoffeePouringSound } = useLazySound(coffeePouring);
+  const { play: playCoffeePouringEnd } = useLazySound(coffeePouringEnd);
+  const { play: playMugServed } = useLazySound(mugServed);
 
   const [gameState, setGameState] = useState<GameState>('OFF');
   const [objective, setObjective] = useState(0);
@@ -91,7 +91,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
 
   const handleBtnOn = useCallback(() => {
     stopCoffeePouring();
-    if (gameState === 'OFF') {
+    if (gameState === 'OFF' || !(gameState === 'PAUSED' && coffeeHeight === 0)) {
       playCoffeeMachineOnOff();
     }
     setGameState('PAUSED');
@@ -101,7 +101,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
     } else {
       setCoffeeHeight(0);
     }
-  }, [gameState, playCoffeeMachineOnOff, resetGame, setNewObjective, stopCoffeePouring]);
+  }, [gameState, playCoffeeMachineOnOff, resetGame, setNewObjective, stopCoffeePouring, coffeeHeight]);
 
   const handleBtnCoffee = useCallback(() => {
     stopCoffeePouring();

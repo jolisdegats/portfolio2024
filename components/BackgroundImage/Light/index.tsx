@@ -3,11 +3,11 @@ import lightOn from '@/assets/light.webp';
 import { toggleLight } from "@/lib/context";
 import { useAppContext } from "@/lib/hooks";
 import turnonlamp from "@/assets/sounds/turnonlamp.mp3";
-import useSound from "use-sound";
+import { useLazySound } from "@/lib/hooks/useLazySound";
 
 export const MarkerLight = () => {
   const { dispatch } = useAppContext(); 
-  const [play] = useSound(turnonlamp, {volume : 0.75});
+  const { play } = useLazySound(turnonlamp, {volume : 0.75});
 
 const onClickLamp = () => {
   play();
