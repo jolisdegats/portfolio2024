@@ -1,12 +1,16 @@
 import Shape, { ShapeType } from "../Shape";
 import { useAppContext } from "@/lib/hooks";
 import mug from '@/assets/sounds/mug.mp3';
-import Modal from "@/components/Modal";
 import { changeModal } from "@/lib/context/ actions";
-import CoffeeMachine, { type CoffeeMachineRef, type HandleStateChange } from "@/components/CoffeeMachine";
+import { type CoffeeMachineRef, type HandleStateChange } from "@/components/CoffeeMachine";
 import { useRef, useState } from "react";
 import Mug from "@/components/CoffeeMachine/Mug";
 import { useSoundManager } from "@/lib/hooks/useSoundManager";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import('@/components/Modal'));
+const CoffeeMachine = dynamic(() => import('@/components/CoffeeMachine'));
+
+
 
 export const MarkerCoffee = () => {
     const { dispatch } = useAppContext(); 

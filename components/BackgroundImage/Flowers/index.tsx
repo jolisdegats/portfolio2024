@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import Modal from '@/components/Modal';
+import dynamic from "next/dynamic";
 import Shape, { type ShapeType } from '../Shape';
 import { changeModal } from '@/lib/context';
 import { useAppContext } from '@/lib/hooks';
+const Modal = dynamic(() => import('@/components/Modal'));
 
 const MarkerFlowers: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

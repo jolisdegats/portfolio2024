@@ -1,4 +1,5 @@
-import Modal from "@/components/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import('@/components/Modal'));
 
 const Credits = () => {
     return (

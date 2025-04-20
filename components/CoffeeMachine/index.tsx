@@ -1,10 +1,21 @@
+'use client'
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
-import coffeeMachineOnOff from '@/assets/sounds/coffee-machine-on-off.mp3';
-import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
-import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
-import mugServed from '@/assets/sounds/mug-served.mp3';
-import Mug from './Mug';
+import { useAppContext } from '@/lib/hooks';
 import { useSoundManager } from '@/lib/hooks/useSoundManager';
+import Mug from './Mug';
+
+// Sound imports will be loaded dynamically
+const SOUNDS = {
+  coffeeMachineOnOff: () => import('@/assets/sounds/coffee-machine-on-off.mp3'),
+  coffeePouring: () => import('@/assets/sounds/coffee-pouring.mp3'),
+  coffeePouringEnd: () => import('@/assets/sounds/coffee-pouring-end.mp3'),
+  mugServed: () => import('@/assets/sounds/mug-served.mp3'),
+} as const;
+
+type SoundKey = keyof typeof SOUNDS;
+type SoundModule = { default: string };
+
+export type GameState = 'END' | 'RUN' | 'PAUSED' | 'OFF';
 
 export interface HandleStateChange {
   gameState: GameState;
@@ -19,8 +30,6 @@ interface CoffeeMachineProps {
   hideControls?: boolean;
 }
 
-export type GameState = 'END' | 'RUN' | 'PAUSED' | 'OFF';
-
 export interface CoffeeMachineRef {
   resetGame: (params: ResetGameParams) => void;
 }
@@ -30,13 +39,59 @@ interface ResetGameParams {
   shouldGetNewObjective?: boolean;
 }
 
+interface GameStateConfig {
+  isActive: boolean;
+  canInteract: boolean;
+  showControls: boolean;
+  showMug: boolean;
+  showArm: boolean;
+  showCoffee: boolean;
+}
+
+const GAME_STATE_CONFIG: Record<GameState, GameStateConfig> = {
+  OFF: { isActive: false, canInteract: false, showControls: true, showMug: false, showArm: false, showCoffee: false },
+  PAUSED: { isActive: true, canInteract: true, showControls: true, showMug: true, showArm: true, showCoffee: true },
+  RUN: { isActive: true, canInteract: true, showControls: true, showMug: true, showArm: true, showCoffee: true },
+  END: { isActive: false, canInteract: false, showControls: true, showMug: false, showArm: false, showCoffee: false },
+};
+
 const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handleStateChange, hideControls = false }, ref) => {
+  const { state, dispatch } = useAppContext();
   const coffeeRef = useRef<HTMLDivElement>(null);
   const mugRef = useRef<HTMLDivElement>(null);
-  const { play: playCoffeeMachineOnOff } = useSoundManager(coffeeMachineOnOff, { volume: 0.8 });
-  const { play: playCoffeePouring, stop: stopCoffeePouringSound } = useSoundManager(coffeePouring, { volume: 1 });
-  const { play: playCoffeePouringEnd } = useSoundManager(coffeePouringEnd, { volume: 1 });
-  const { play: playMugServed } = useSoundManager(mugServed, { volume: 0.5 });
+  const animationFrameRef = useRef<number>();
+
+  // Initialize sound managers with dynamic loading
+  const [sounds, setSounds] = useState<Record<SoundKey, string>>({} as Record<SoundKey, string>);
+  const [soundLoadingError, setSoundLoadingError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const loadSounds = async () => {
+      try {
+        const loadedSounds = await Promise.all(
+          Object.entries(SOUNDS).map(async ([key, importFn]) => {
+            try {
+              const soundModule = await importFn() as SoundModule;
+              return [key, soundModule.default];
+            } catch (error) {
+              console.error(`Failed to load sound: ${key}`, error);
+              return [key, ''];
+            }
+          })
+        );
+        setSounds(Object.fromEntries(loadedSounds) as Record<SoundKey, string>);
+      } catch (error) {
+        console.error('Failed to load sounds:', error);
+        setSoundLoadingError('Failed to load game sounds');
+      }
+    };
+    loadSounds();
+  }, []);
+
+  const { play: playCoffeeMachineOnOff } = useSoundManager(sounds.coffeeMachineOnOff, { volume: 0.8 });
+  const { play: playCoffeePouring, stop: stopCoffeePouringSound } = useSoundManager(sounds.coffeePouring, { volume: 1 });
+  const { play: playCoffeePouringEnd } = useSoundManager(sounds.coffeePouringEnd, { volume: 1 });
+  const { play: playMugServed } = useSoundManager(sounds.mugServed, { volume: 0.5 });
 
   const [gameState, setGameState] = useState<GameState>('OFF');
   const [objective, setObjective] = useState(0);
@@ -45,6 +100,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
   const [coffeeHeight, setCoffeeHeight] = useState(0);
 
   const SPEED_IN_MS = 50;
+  const currentStateConfig = GAME_STATE_CONFIG[gameState];
 
   const stopCoffeePouring = useCallback(() => {
     if (coffeeHeight > 0 && gameState === 'RUN') {
@@ -57,15 +113,23 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
     return mugRef.current ? Math.round((coffeeHeight / mugRef.current.clientHeight) * 100) : 0;
   }, [coffeeHeight]);
 
-  const resetGame = useCallback(({gameState = 'PAUSED', shouldGetNewObjective = false} : ResetGameParams) => {
+  const resetGame = useCallback(({gameState = 'PAUSED', shouldGetNewObjective = false}: ResetGameParams) => {
     const newObjective = shouldGetNewObjective ? Math.floor(Math.random() * 100) : 0;
-    stopCoffeePouring()
+    stopCoffeePouring();
     setCoffeeHeight(0);
     setResult('');
     setMessage('');
     setObjective(newObjective);
     setGameState(gameState);
-    handleStateChange?.({gameState, coffeeHeight: 0, objective: newObjective, result: '', message: '' });
+    if (handleStateChange) {
+      handleStateChange({
+        gameState,
+        coffeeHeight: 0,
+        objective: newObjective,
+        result: '',
+        message: ''
+      });
+    }
   }, [handleStateChange, stopCoffeePouring]);
 
   useImperativeHandle(ref, () => ({
@@ -75,16 +139,19 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
   const setNewObjective = useCallback(() => {
     const newObjective = Math.floor(Math.random() * 100);
     setObjective(newObjective);
-    handleStateChange?.({ objective: newObjective });
+    if (handleStateChange) {
+      handleStateChange({ objective: newObjective });
+    }
   }, [handleStateChange]);
 
   const handleBtnOff = useCallback(() => {
     if(gameState !== 'OFF'){
-    if (gameState !== 'END') {
-      playCoffeeMachineOnOff();
+      if (gameState !== 'END') {
+        playCoffeeMachineOnOff();
+      }
+      resetGame({gameState: 'OFF'});
+      setGameState('OFF');
     }
-    resetGame({gameState: 'OFF'});
-    setGameState('OFF');}
   }, [gameState, playCoffeeMachineOnOff, resetGame]);
 
   const handleBtnOn = useCallback(() => {
@@ -93,7 +160,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
       playCoffeeMachineOnOff();
     }
     setGameState('PAUSED');
-    if (['OFF', 'END'].includes(gameState)) {
+    if (gameState === 'OFF' || gameState === 'END') {
       resetGame({});
       setNewObjective();
     } else {
@@ -110,18 +177,18 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
         resetGame({});
         setNewObjective();
         setGameState('PAUSED');
-        playCoffeePouring()
+        playCoffeePouring();
       }
-        if(gameState === 'PAUSED') {
-          playCoffeePouring()
-        }
+      if(gameState === 'PAUSED') {
+        playCoffeePouring();
+      }
       setGameState('RUN');
     }
   }, [gameState, playCoffeePouring, resetGame, setNewObjective, stopCoffeePouring]);
 
   const calculateResult = useCallback(() => {
     const percentage = calculatePercentage();
-    if (['RUN', 'PAUSED'].includes(gameState)) {
+    if (gameState === 'RUN' || gameState === 'PAUSED') {
       setResult(`Percent Filled: ${percentage}%`);
 
       let newMessage = '';
@@ -136,7 +203,14 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
       }
 
       setMessage(newMessage);
-      handleStateChange?.({ result: `Percent Filled: ${percentage}%`, message: newMessage, coffeeHeight: percentage, gameState: 'END' });
+      if (handleStateChange) {
+        handleStateChange({
+          result: `Percent Filled: ${percentage}%`,
+          message: newMessage,
+          coffeeHeight: percentage,
+          gameState: 'END'
+        });
+      }
     }
   }, [calculatePercentage, objective, gameState, handleStateChange]);
 
@@ -151,19 +225,31 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
 
   useEffect(() => {
     if (gameState === 'RUN') {
-      const interval = setInterval(() => {
-        setCoffeeHeight(prevHeight => {
-          const maxHeight = mugRef.current?.clientHeight ?? 0;
-          if (prevHeight >= maxHeight) {
-            setGameState('PAUSED');
-            stopCoffeePouring()
-            return maxHeight;
-          }
-          return prevHeight + 1;
-        });
-      }, SPEED_IN_MS);
+      let lastUpdate = performance.now();
+      
+      const updateCoffeeHeight = (timestamp: number) => {
+        if (timestamp - lastUpdate >= SPEED_IN_MS) {
+          setCoffeeHeight(prevHeight => {
+            const maxHeight = mugRef.current?.clientHeight ?? 0;
+            if (prevHeight >= maxHeight) {
+              setGameState('PAUSED');
+              stopCoffeePouring();
+              return maxHeight;
+            }
+            return prevHeight + 1;
+          });
+          lastUpdate = timestamp;
+        }
+        animationFrameRef.current = requestAnimationFrame(updateCoffeeHeight);
+      };
 
-      return () => clearInterval(interval);
+      animationFrameRef.current = requestAnimationFrame(updateCoffeeHeight);
+
+      return () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+      };
     }
   }, [gameState, stopCoffeePouring]);
 
@@ -174,7 +260,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
           <button 
             onClick={handleBtnCoffee}
             className={`unbuttonize absolute top-1/2 left-1/2 w-[40px] h-[40px] rounded-full border-[7px] border-[#333] bg-[#a9cce2] -translate-x-1/2 -translate-y-1/2 -rotate-45 shadow-[inset_14px_0px_2px_1px_#9ebed3] 
-              ${gameState === 'OFF' ? "cursor-default": ""}
+              ${!currentStateConfig.canInteract ? "cursor-default": ""}
               ${gameState === "RUN" ? "hover:border-[#555]" : ""}
               ${gameState === "PAUSED" ? "animate-borderHighlight transition-all duration-300 ease-in-out bg-[#a9cce2] hover:border-[#555]" : ""}`}
           />
@@ -185,8 +271,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
           />
           <button 
             onClick={handleBtnOn} 
-            className={
-              `unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[60px] 
+            className={`unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[60px] 
               ${gameState !== 'OFF' ? "bg-[#00ad00]" : "bg-[#003a00]"}
               ${gameState === "PAUSED" && coffeeHeight === 0 ? "cursor-default" : "cursor-pointer"}`}
           />
@@ -205,12 +290,12 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
           </div>
 
           <div className={`absolute z-[5] left-[calc(50%-3px)] bottom-[10px] w-[6px] mx-auto bg-[#73372c] h-[180px] transition-transform duration-500 pointer-events-none
-          ${gameState !== 'RUN' ? 'origin-bottom scale-y-0' : ''}
+          ${!currentStateConfig.showCoffee ? 'origin-bottom scale-y-0' : ''}
           ${gameState === 'RUN' ? 'scale-y-100 opacity-100 origin-top' : ''}`}
           />
 
           <div className="absolute left-1/2 bottom-[5px]">
-            {!['END', 'OFF'].includes(gameState) && (
+            {currentStateConfig.showMug && (
               <Mug 
                 coffeeHeight={coffeeHeight} 
                 onClickOnMug={handleMugClick} 

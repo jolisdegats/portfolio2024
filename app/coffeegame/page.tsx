@@ -1,4 +1,4 @@
-import CoffeeGame from "@/components/CoffeeGame/CoffeeGame"
+import CoffeeGame from "@/components/CoffeeGame"
 
 
 const CoffeeGamePage = () => {

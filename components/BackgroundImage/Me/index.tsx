@@ -1,10 +1,11 @@
 import Shape, { ShapeType } from "../Shape";
 import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
-import Modal from "@/components/Modal";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import avatar from "@/assets/avatar.webp";
 import Head from "next/head";
+const Modal = dynamic(() => import('@/components/Modal'));
 
 export const MarkerMe = () => {
     const { dispatch } = useAppContext(); 
