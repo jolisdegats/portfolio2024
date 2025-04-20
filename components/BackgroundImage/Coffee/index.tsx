@@ -4,7 +4,6 @@ import mug from '@/assets/sounds/mug.mp3';
 import Modal from "@/components/Modal";
 import { changeModal } from "@/lib/context/ actions";
 import CoffeeMachine, { type CoffeeMachineRef, type HandleStateChange } from "@/components/CoffeeMachine";
-import styles from "./styles.module.scss";
 import { useRef, useState } from "react";
 import Mug from "@/components/CoffeeMachine/Mug";
 import { useSoundManager } from "@/lib/hooks/useSoundManager";
@@ -34,10 +33,10 @@ export const MarkerCoffee = () => {
     }
     return <>
     <Modal handleClose={() => coffeMachineRef.current?.resetGame({gameState: 'OFF'})} name="coffee">
-        <div className={styles.gameModal}>
-            <div className={styles.gameInfo}>
-                <h2>Coffee Break?</h2>
-                <p>Time for a quick game!</p>
+        <div className="grid grid-cols-[3fr_5fr] w-full h-full md:grid-cols-[3fr_5fr] grid-cols-1 md:overflow-visible overflow-auto">
+            <div className="flex flex-col items-center text-center">
+                <h2 className="text-4xl font-bold mb-4">Coffee Break?</h2>
+                <p className="text-base">Time for a quick game!</p>
                 {!gameState.objective ? (
                     <p>Press the power button to begin brewing.</p>
                 ) : (
@@ -46,9 +45,9 @@ export const MarkerCoffee = () => {
               
                
                 {gameState.gameState === 'END' && (
-                    <div className={styles.endGameContainer}>
-                         <div className={styles.mugContainerRelative}>
-                        <div className={styles.mugContainer}>
+                    <div className="mt-12 mb-4 flex flex-col items-center max-h-[50vh] overflow-y-auto">
+                         <div className="relative cursor-pointer w-[90px] h-[90px]">
+                        <div className="w-[90px] h-[90px] left-[36px] absolute">
                             <Mug onClickOnMug={() => coffeMachineRef.current?.resetGame({gameState: 'PAUSED',shouldGetNewObjective:true})} coffeeHeight={gameState.coffeeHeight/100} />
                         </div>
                         </div>
@@ -58,10 +57,10 @@ export const MarkerCoffee = () => {
                     <p>{gameState.result}</p>
                 )}
                 {gameState.message && (
-                    <p className={styles.messageUnderMug}>{gameState.message}</p>
+                    <p className="text-base">{gameState.message}</p>
                 )}
             </div>
-            <div className={styles.game}>
+            <div className="overflow-auto w-full h-full flex md:overflow-auto overflow-visible">
             <CoffeeMachine ref={coffeMachineRef} handleStateChange={handleStateChange} hideControls/>
             </div>
         </div>

@@ -19,17 +19,27 @@ const config: Config = {
       },
       keyframes: {
         pressArm: {
-          '0%, 100%': { transform: 'rotate(0deg)' },
-          '50%': { transform: 'rotate(-15deg)' }
+          '0%': { transform: 'rotate3d(0, 0, 0, 0)' },
+          '100%': { transform: 'rotate3d(0, 1, 0, 40deg)' }
+        },
+        bubblesAnimation: {
+          '0%': { transform: 'translate(0,0)', opacity: "0" },
+          '100%': { transform: 'translate(-15px, -40px)', opacity: "1" }
         },
         borderHighlight: {
           '0%, 100%': { borderColor: '#333' },
           '50%': { borderColor: '#00ad00' }
-        }
+        },
+          pulse: {
+            '0%, 100%': { r: '20', opacity: '0.2' },
+            '50%': { r: '22', opacity: '0.4' }
+          }
       },
       animation: {
         'pressArm': 'pressArm 1s 2 alternate',
-        'borderHighlight': 'borderHighlight 2s infinite ease-in-out'
+        'borderHighlight': 'borderHighlight 2s infinite ease-in-out',
+        'bubblesAnimation': 'bubblesAnimation 8s infinite linear',
+        'pulse': 'pulse 2s infinite'
       }
     },
   },

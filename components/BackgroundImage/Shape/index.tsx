@@ -1,6 +1,5 @@
 import { useAppContext } from '@/lib/hooks';
 import React, { useEffect, useState } from 'react';
-import styles from './styles.module.scss'; // We'll create this CSS module
 
 interface CommonShapeProps extends React.HTMLAttributes<HTMLAnchorElement> {
   href?: string;
@@ -78,9 +77,11 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
         )}
         <g 
           transform={`translate(${markerX}, ${markerY})`} 
-          className={`pointer-events-none ${isVisible ? styles.visible : styles.hidden} ${isDisplayed ?  '' : 'hidden'}`}
+          className={`pointer-events-none transition-opacity duration-500 ease-in-out 
+            ${isVisible ? "opacity-100" : "opacity-0"}
+            ${isDisplayed ?  '' : 'hidden'}`}
         >
-          <circle r="20" fill={markerColor} className={styles.pulse} />
+          <circle r="20" fill={markerColor} className="animate-pulse" />
           <circle r="10" fill={markerColor} />
         </g>
       </g>

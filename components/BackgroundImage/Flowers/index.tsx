@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import styles from './styles.module.scss';
 import Modal from '@/components/Modal';
 import Shape, { type ShapeType } from '../Shape';
 import { changeModal } from '@/lib/context';
@@ -181,7 +180,7 @@ const MarkerFlowers: React.FC = () => {
   return (
     <>
       <Modal name="flowers" handleClose={() => setIsModalOpen(false)}>
-        <div ref={containerRef} className={styles.container}>
+        <div ref={containerRef} className="top-0 left-0 w-full h-screen flex flex-col-reverse items-start`">
           <canvas ref={canvasRef} />
         </div>
       </Modal>
