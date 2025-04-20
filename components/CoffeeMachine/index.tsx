@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
-import styles from './styles.module.scss';
-import classnames from "classnames";
 import useSound from 'use-sound';
-import coffeeMachineOnOff from '../../assets/sounds/coffee-machine-on-off.mp3';
-import coffeePouring from '../../assets/sounds/coffee-pouring.mp3';
-import coffeePouringEnd from '../../assets/sounds/coffee-pouring-end.mp3';
-import mugServed from '../../assets/sounds/mug-served.mp3';
+import coffeeMachineOnOff from '@/assets/sounds/coffee-machine-on-off.mp3';
+import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
+import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
+import mugServed from '@/assets/sounds/mug-served.mp3';
 import Mug from './Mug';
 
 export interface HandleStateChange {
@@ -170,41 +168,48 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
   }, [gameState, stopCoffeePouring]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.coffeeMachine}>
-        <div className={styles.head}>
+    <div className="w-full max-h-full mx-auto">
+      <div className="max-w-[450px] w-full mx-auto my-[20px] p-[20px]">
+        <div className="w-[88%] h-[100px] mx-auto bg-[#e4e8e9] rounded-[10px] relative shadow-[inset_10px_0px_2px_#d4d4d4,inset_-10px_0px_2px_#d4d8d9]">
           <button 
             onClick={handleBtnCoffee}
-            className={classnames(styles.circle, { [styles['circle--inactive']] : gameState === 'OFF', [styles['circle--active']]: gameState === 'RUN', [styles['circle--inviting']] : gameState === 'PAUSED' })}
+            className={`unbuttonize absolute top-1/2 left-1/2 w-[40px] h-[40px] rounded-full border-[7px] border-[#333] bg-[#a9cce2] -translate-x-1/2 -translate-y-1/2 -rotate-45 shadow-[inset_14px_0px_2px_1px_#9ebed3] 
+              ${gameState === 'OFF' ? "cursor-default": ""}
+              ${gameState === "RUN" ? "hover:border-[#555]" : ""}
+              ${gameState === "PAUSED" ? "animate-borderHighlight transition-all duration-300 ease-in-out bg-[#a9cce2] hover:border-[#555]" : ""}`}
           />
           <button 
             onClick={handleBtnOff} 
-            className={classnames(styles.choice, styles.choice1, { [styles['choice1--active']]: gameState === 'OFF' })}
+            className={`unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[30px] 
+              ${gameState === 'OFF' ? "bg-[#ce1b1b] cursor-default" : "bg-[#590a0a] cursor-pointer bg-[#590a0a]"}`}
           />
           <button 
             onClick={handleBtnOn} 
-            className={classnames(styles.choice, styles.choice2, { [styles['choice2--active']]: gameState !== 'OFF', [styles['choice2--inviting']] : gameState === 'OFF' })}
+            className={
+              `unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[60px] 
+              ${gameState !== 'OFF' ? "bg-[#00ad00]" : "bg-[#003a00]"}
+              ${gameState === "PAUSED" && coffeeHeight === 0 ? "cursor-default" : "cursor-pointer"}`}
           />
         </div>
 
-        <div className={styles.content}>
-          <div className={styles.back}/>
-          <div className={styles.press}>
-            <div className={styles.one}/>
-            <div className={styles.two}/>
-            <div className={styles.three}/>
-            <div className={classnames(styles.armContainer, { [styles["armContainer--active"]]: gameState === 'RUN' })}>
-              <div className={styles.five}/>
-              <div className={styles.six}/>
+        <div className="relative w-[80%] max-w-[350px] h-[200px] mx-auto bg-[#b2b2b2] shadow-[inset_7px_0px_0px_#a5a5a5]">
+          <div className="w-[77%] h-full absolute bottom-0 left-1/2 bg-[#949494] -translate-x-1/2 shadow-[inset_6px_0px_0px_#8a8a8a]"/>
+          <div className="absolute z-[6] top-0 left-1/2 -translate-x-1/2">
+            <div className="w-[120px] h-[20px] bg-[#d7d7d7] rounded-[0_0_60px_60px] shadow-[inset_6px_-7px_3px_#c8c8c8]"/>
+            <div className="w-[70px] h-[18px] mx-auto -mb-[5px] bg-black rounded-[0_0_50%50%]"/>
+            <div className="w-[10px] h-[14px] mx-auto bg-black rounded-[0_0_3px_3px]"/>
+            <div className={`absolute top-0 right-[7px] -z-[1] origin-left ${ gameState === 'RUN' ? "animate-pressArm": ""}`}>
+              <div className="absolute top-[23px] right-[-20px] w-[46px] h-[6px] bg-[#585858]"/>
+              <div className="absolute top-[17px] right-[-68px] w-[51px] h-[17px] bg-black rounded-[40px]"/>
             </div>
           </div>
 
-          <div className={classnames(styles.coffeePouring, {
-            [styles['coffeePouring--inactive']]: gameState !== 'RUN',
-            [styles["coffeePouring--active"]]: gameState === 'RUN'
-          })}/>
+          <div className={`absolute z-[5] left-[calc(50%-3px)] bottom-[10px] w-[6px] mx-auto bg-[#73372c] h-[180px] transition-transform duration-500 pointer-events-none
+          ${gameState !== 'RUN' ? 'origin-bottom scale-y-0' : ''}
+          ${gameState === 'RUN' ? 'scale-y-100 opacity-100 origin-top' : ''}`}
+          />
 
-          <div className={styles.muggContainer}>
+          <div className="absolute left-1/2 bottom-[5px]">
             {!['END', 'OFF'].includes(gameState) && (
               <Mug 
                 coffeeHeight={coffeeHeight} 
@@ -214,14 +219,14 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
                 gameState={gameState}
               />
             )}
-            <div className={styles.muggBase}/>
+            <div className="z-[1] absolute bottom-[-5px] left-1/2 w-[100px] h-[5px] bg-[#333] rounded-[10px_10px_0_0] -translate-x-1/2"/>
           </div>
         </div>
 
-        <div className={styles.aboveBase}/>
-        <div className={styles.base}>
-          <div/>
-          <div className={styles.spans}>
+        <div className="w-[83%] h-[8px] bg-[#0b4a66] mx-auto rounded-[7px_7px_0_0]"/>
+        <div className="relative w-[90%] h-[60px] mx-auto rounded-[18px_18px_10px_10px] bg-[#0e5f82] overflow-hidden py-[15px] px-0 shadow-[inset_10px_-27px_4px_#0b4a66]">
+          <div className="absolute left-0 bottom-0 w-full h-[20%] bg-black"/>
+          <div className="flex justify-around items-center w-full h-full relative z-[1] text-white bottom-[10px] text-center">
             {!hideControls && (
               <div>
                 <p>
