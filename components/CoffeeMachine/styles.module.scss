@@ -154,6 +154,14 @@
   }
 }
 
+@keyframes pressArmAnimation {
+  0% {
+    transform: rotate3d(0, 0, 0, 0);
+  }
+  100% {
+    transform: rotate3d(0, 1, 0, 40deg);
+  }
+}
 .five {
   position: absolute;
   top: 23px;

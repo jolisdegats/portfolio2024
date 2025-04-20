@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
-import styles from './styles.module.scss';
 import classnames from "classnames";
+import styles from './styles.module.scss';
 import coffeeMachineOnOff from '@/assets/sounds/coffee-machine-on-off.mp3';
 import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
 import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
