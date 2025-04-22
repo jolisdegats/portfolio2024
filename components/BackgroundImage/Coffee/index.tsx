@@ -1,4 +1,4 @@
-import Shape, { ShapeType } from "../Shape";
+import Shape, { ShapeType } from "@/components/BackgroundImage/Shape";
 import { useAppContext } from "@/lib/hooks";
 import mug from '@/assets/sounds/mug.mp3';
 import { changeModal } from "@/lib/context/ actions";

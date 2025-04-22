@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import dynamic from "next/dynamic";
-import Shape, { type ShapeType } from '../Shape';
+import Shape, { type ShapeType } from '@/components/BackgroundImage/Shape';
 import { changeModal } from '@/lib/context';
 import { useAppContext } from '@/lib/hooks';
 const Modal = dynamic(() => import('@/components/Modal'));

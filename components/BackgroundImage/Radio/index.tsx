@@ -1,4 +1,4 @@
-import Shape, { ShapeType } from "../Shape";
+import Shape, { ShapeType } from "@/components/BackgroundImage/Shape";
 import radioTuning from '@/assets/sounds/tuning-radio.mp3';
 import radioSwitch from '@/assets/sounds/radio-switch.mp3';
 import radioOn from '@/assets/radio-on.webp';

@@ -1,6 +1,6 @@
 
-import type { ShapeType } from "../Shape";
-import Shape from "../Shape";
+import type { ShapeType } from "@/components/BackgroundImage/Shape";
+import Shape from "@/components/BackgroundImage/Shape";
 
 const MarkerComputer = () => {
     const shape : ShapeType = {
