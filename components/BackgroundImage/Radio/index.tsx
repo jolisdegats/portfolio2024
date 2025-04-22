@@ -26,7 +26,8 @@ export const MarkerRadio = () => {
     });
     const { play: playTuning, stop: stopTuning } = useSoundEffect(radioTuning, { 
         volume: 0.5,
-        preload: true 
+        preload: true,
+        interrupt: true
     });
     const happyChildren = useSoundEffect(radioMusicHappyChildren, { 
         volume: 0.5,
