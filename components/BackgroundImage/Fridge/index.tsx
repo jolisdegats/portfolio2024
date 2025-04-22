@@ -1,6 +1,6 @@
 import { useAppContext } from "@/lib/hooks";
-import Shape from "../Shape";
-import type { ShapeType } from "../Shape";
+import Shape from "@/components/BackgroundImage/Shape";
+import type { ShapeType } from "@/components/BackgroundImage/Shape";
 import { useEffect } from "react";
 import { toggleFridge } from "@/lib/context";
 import fridgeOpen from '@/assets/fridge2.png';

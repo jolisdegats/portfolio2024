@@ -46,18 +46,6 @@ a:hover {
   text-shadow: 0 0 8px rgba(97, 218, 251, 0.5);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-main {
-  width: 100dvw;
-  height: 100dvh;
-  overflow: hidden;
-}
-
 /* Replace the scrollbar styles with: */
 * {
   scrollbar-width: thin;

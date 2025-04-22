@@ -1,4 +1,4 @@
-import Shape, { ShapeType } from "../Shape";
+import Shape, { ShapeType } from "@/components/BackgroundImage/Shape";
 import { useAppContext } from "@/lib/hooks";
 import { changeModal } from "@/lib/context/ actions";
 import useSound from "use-sound";
@@ -34,7 +34,7 @@ export const MarkerCoffee = () => {
     }
     return <>
     <Modal handleClose={() => coffeMachineRef.current?.resetGame({gameState: 'OFF'})} name="coffee">
-        <div className="grid grid-cols-[3fr_5fr] w-full h-full md:grid-cols-[3fr_5fr] grid-cols-1 md:overflow-visible overflow-auto">
+        <div className="grid grid-cols-[3fr_5fr] w-full h-full md:grid-cols-[3fr_5fr] grid-cols-1 overflow-auto">
             <div className="flex flex-col items-center text-center">
                 <h2 className="text-4xl font-bold mb-4">Coffee Break?</h2>
                 <p className="text-base">Time for a quick game!</p>
