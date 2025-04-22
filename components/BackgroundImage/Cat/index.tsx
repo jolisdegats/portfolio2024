@@ -4,26 +4,24 @@ import Shape, { type ShapeType } from '../Shape';
 import { useState, useCallback } from 'react'; // Added useCallback
 import { useSoundEffect } from '@/lib/hooks/useSoundEffect';
 
-const VOLUME = 1;
+const VOLUME = 0.4;
 
 export const MarkerCat = () => {
-    const {play, fade, stop, stopWithDelay} = useSoundEffect(catPurring, { interrupt: true, volume: 0});
+    const {play, fade, stop} = useSoundEffect(catPurring, { volume: 0});
     const [isDragging, setIsDragging] = useState(false);
 
     const startDragging = useCallback(() => {
         setIsDragging(true);
         play()
-    }, [ play]);
+        fade(0, VOLUME, 300);
+    }, [ play, fade]);
 
     const stopDragging = useCallback(() => {
         console.log('stopDragging')
         setIsDragging(false);
-        setTimeout(() => {
-            console.log('stopDragging2')
-          
-        }, 300);
-        stopWithDelay(300);
-    }, [stopWithDelay]);
+        fade(VOLUME, 0, 500);
+        stop();
+    }, [stop, fade]);
 
     const shape: ShapeType = {
         type:"rectangle",
