@@ -289,8 +289,7 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
             </div>
           </div>
 
-          <div className={`absolute z-[5] left-[calc(50%-3px)] bottom-[10px] w-[6px] mx-auto bg-[#73372c] h-[180px] transition-transform duration-500 pointer-events-none
-          ${!currentStateConfig.showCoffee ? 'origin-bottom scale-y-0' : ''}
+          <div className={`absolute z-[5] left-[calc(50%-3px)] bottom-[10px] w-[6px] mx-auto bg-[#73372c] h-[180px] transition-transform duration-500 pointer-events-none origin-bottom scale-y-0
           ${gameState === 'RUN' ? 'scale-y-100 opacity-100 origin-top' : ''}`}
           />
 
