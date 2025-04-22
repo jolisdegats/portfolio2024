@@ -4,7 +4,6 @@ import { ImageRadio, MarkerRadio } from '@/components/BackgroundImage/Radio';
 import { ImagePhone, MarkerPhone } from '@/components/BackgroundImage/Phone';
 import { ImageLight, MarkerLight } from '@/components/BackgroundImage/Light';
 import { MarkerCoffee } from '@/components/BackgroundImage/Coffee';
-import styles from "./styles.module.scss";
 import { ImageCat, MarkerCat } from './Cat';
 import MarkerFlowers from './Flowers';
 import { MarkerMe } from './Me';
@@ -44,7 +43,7 @@ const [isBgLoading, setIsBgLoading] = useState(true);
 </Head>
     <Background onLoad={setIsBgLoading}/>
     {!isBgLoading && <svg
-    className={styles['centered-svg']}
+    className="flex justify-center items-center h-screen"
     width="100%"
     height="100%"
     preserveAspectRatio="xMidYMid slice"
