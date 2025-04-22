@@ -4,7 +4,6 @@ import { Action } from "./ actions";
 import { AppState } from "./AppContext";
 
 const appReducer = (state: AppState, action: Action): AppState => {
-  console.log('action', action);
   switch (action.type) {
     case 'TOGGLE_HELP_MARKERS':
       return { ...state, showHelpMarkers: !state.showHelpMarkers };

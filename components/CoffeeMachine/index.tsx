@@ -173,22 +173,32 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
         <div className="w-[88%] h-[100px] mx-auto bg-[#e4e8e9] rounded-[10px] relative shadow-[inset_10px_0px_2px_#d4d4d4,inset_-10px_0px_2px_#d4d8d9]">
           <button 
             onClick={handleBtnCoffee}
-            className={`unbuttonize absolute top-1/2 left-1/2 w-[40px] h-[40px] rounded-full border-[7px] border-[#333] bg-[#a9cce2] -translate-x-1/2 -translate-y-1/2 -rotate-45 shadow-[inset_14px_0px_2px_1px_#9ebed3] 
-              ${gameState === 'OFF' ? "cursor-default": ""}
+            className={`
+              unbuttonize absolute top-1/2 left-1/2 w-[40px] h-[40px] 
+              rounded-full border-[7px] border-[#333] bg-[#a9cce2] 
+              -translate-x-1/2 -translate-y-1/2 -rotate-45 
+              shadow-[inset_14px_0px_2px_1px_#9ebed3]
+              ${gameState === 'OFF' ? "cursor-default" : ""}
               ${gameState === "RUN" ? "hover:border-[#555]" : ""}
-              ${gameState === "PAUSED" ? "animate-borderHighlight transition-all duration-300 ease-in-out bg-[#a9cce2] hover:border-[#555]" : ""}`}
+              ${gameState === "PAUSED" ? "animate-borderHighlight transition-all duration-300 ease-in-out bg-[#a9cce2] hover:border-[#555]" : ""}
+            `}
           />
           <button 
             onClick={handleBtnOff} 
-            className={`unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[30px] 
-              ${gameState === 'OFF' ? "bg-[#ce1b1b] cursor-default" : "bg-[#590a0a] cursor-pointer bg-[#590a0a]"}`}
+            className={`
+              unbuttonize absolute top-1/2 w-[20px] h-[20px] 
+              rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[30px]
+              ${gameState === 'OFF' ? "bg-[#ce1b1b] cursor-default" : "bg-[#590a0a] cursor-pointer bg-[#590a0a]"}
+            `}
           />
           <button 
             onClick={handleBtnOn} 
-            className={
-              `unbuttonize absolute top-1/2 w-[20px] h-[20px] rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[60px] 
+            className={`
+              unbuttonize absolute top-1/2 w-[20px] h-[20px] 
+              rounded-full -translate-y-1/2 shadow-[0px_0px_5px_#555] left-[60px]
               ${gameState !== 'OFF' ? "bg-[#00ad00]" : "bg-[#003a00]"}
-              ${gameState === "PAUSED" && coffeeHeight === 0 ? "cursor-default" : "cursor-pointer"}`}
+              ${gameState === "PAUSED" && coffeeHeight === 0 ? "cursor-default" : "cursor-pointer"}
+            `}
           />
         </div>
 
@@ -198,16 +208,22 @@ const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handle
             <div className="w-[120px] h-[20px] bg-[#d7d7d7] rounded-[0_0_60px_60px] shadow-[inset_6px_-7px_3px_#c8c8c8]"/>
             <div className="w-[70px] h-[18px] mx-auto -mb-[5px] bg-black rounded-[0_0_50%50%]"/>
             <div className="w-[10px] h-[14px] mx-auto bg-black rounded-[0_0_3px_3px]"/>
-            <div className={`absolute top-0 right-[7px] -z-[1] origin-left ${ gameState === 'RUN' ? "animate-pressArm": ""}`}>
+            <div className={`
+              absolute top-0 right-[7px] -z-[1] origin-left
+              ${gameState === 'RUN' ? "animate-pressArm" : ""}
+            `}>
               <div className="absolute top-[23px] right-[-20px] w-[46px] h-[6px] bg-[#585858]"/>
               <div className="absolute top-[17px] right-[-68px] w-[51px] h-[17px] bg-black rounded-[40px]"/>
             </div>
           </div>
 
-          <div className={`absolute z-[5] left-[calc(50%-3px)] bottom-[10px] w-[6px] mx-auto bg-[#73372c] h-[180px] transition-transform duration-500 pointer-events-none
-          ${gameState !== 'RUN' ? 'origin-bottom scale-y-0' : ''}
-          ${gameState === 'RUN' ? 'scale-y-100 opacity-100 origin-top' : ''}`}
-          />
+          <div className={`
+            absolute z-[5] left-[calc(50%-3px)] bottom-[10px] 
+            w-[6px] mx-auto bg-[#73372c] h-[180px] 
+            transition-transform duration-500 pointer-events-none
+            ${gameState !== 'RUN' ? 'origin-bottom scale-y-0' : ''}
+            ${gameState === 'RUN' ? 'scale-y-100 opacity-100 origin-top' : ''}
+          `}/>
 
           <div className="absolute left-1/2 bottom-[5px]">
             {!['END', 'OFF'].includes(gameState) && (

@@ -13,7 +13,8 @@ const MarkerFlowers: React.FC = () => {
   
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current || !isModalOpen) return;
-
+    
+    const canvas = canvasRef.current
     const pointer = {
       x: 0.66,
       y: 0.3,
@@ -135,11 +136,11 @@ const MarkerFlowers: React.FC = () => {
     render();
 
     window.addEventListener('resize', handleResize);
-    canvasRef.current.addEventListener('click', handleClick);
+    canvas.addEventListener('click', handleClick); 
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      canvasRef.current?.removeEventListener('click', handleClick);
+      canvas.removeEventListener('click', handleClick);
     };
   }, [isModalOpen]);
 
@@ -163,7 +164,7 @@ const MarkerFlowers: React.FC = () => {
   return (
     <>
       <Modal name="flowers" handleClose={() => setIsModalOpen(false)}>
-        <div ref={containerRef} className="top-0 left-0 w-full h-screen flex flex-col-reverse items-start`">
+        <div ref={containerRef} className='z-[-10] absolute top-0 left-0 w-full h-screen min-h-full'>
           <canvas ref={canvasRef} />
         </div>
       </Modal>
