@@ -17,7 +17,6 @@ export const MarkerCat = () => {
     }, [ play, fade]);
 
     const stopDragging = useCallback(() => {
-        console.log('stopDragging')
         setIsDragging(false);
         fade(VOLUME, 0, 500);
         stop();

@@ -41,11 +41,11 @@ export const MarkerRadio = () => {
     });
     const smoothOperator = useSoundEffect(radioMusicSmoothOperator, { 
         volume: 0.5,
-        preload: false
+        preload: false,
     });
     const dreams = useSoundEffect(radioMusicDreams, { 
         volume: 0.5,
-        preload: false
+        preload: false,
     });
 
     const musics = [happyChildren, shy, smoothOperator, dreams];
@@ -61,7 +61,11 @@ export const MarkerRadio = () => {
         } else {
             playSwitch();
             playTuning();
-            musics[currentMusicIndex].play();
+            if(musics[currentMusicIndex] === smoothOperator) {
+                musics[currentMusicIndex].play(1000);
+            } else {
+                musics[currentMusicIndex].play();
+            }
             const nextIndex = getNextIndex(currentMusicIndex, musics.length);
             if(!musics[nextIndex]?.isLoaded) {
                 musics[nextIndex].load();
