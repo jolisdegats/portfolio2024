@@ -31,10 +31,20 @@ const markerColor = '#75BABD';
 const Shape = ({ shape, index }: ShapeLinkProps) => {
   const { state: { showHelpMarkers } } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [isDisplayed, setIsDisplayed] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    setIsVisible(showHelpMarkers);
+    if (showHelpMarkers) {
+      setShouldRender(true);
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
+      const timer = setTimeout(() => setShouldRender(false), 200);
+      return () => clearTimeout(timer);
+    }
   }, [showHelpMarkers]);
 
   const markerX = shape.type === 'rectangle' 
@@ -43,17 +53,6 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
   const markerY = shape.type === 'rectangle' 
     ? shape.y + shape.height / 2 
     : getPolygonCenter(shape.points).y;
-    
-
-    useEffect(() => {
-        if (!isVisible && isDisplayed) {
-            setTimeout(() => setIsDisplayed(false), 500);
-        }
-        if(isVisible && !isDisplayed) {
-          setIsDisplayed(true)
-        }
-    }, [isVisible, isDisplayed]);
-
 
   return (
     <a className="cursor-pointer" key={index} target={shape.href?.startsWith('http') ? "_blank" : "_self"} {...shape} style={{zIndex : 10, ...shape.style}}>
@@ -75,15 +74,16 @@ const Shape = ({ shape, index }: ShapeLinkProps) => {
             points={shape.points}
           />
         )}
-        <g 
-          transform={`translate(${markerX}, ${markerY})`} 
-          className={`pointer-events-none transition-opacity duration-500 ease-in-out 
-            ${isVisible ? "opacity-100" : "opacity-0"}
-            ${isDisplayed ?  '' : 'hidden'}`}
-        >
-          <circle r="20" fill={markerColor} className="animate-pulse" />
-          <circle r="10" fill={markerColor} />
-        </g>
+        {shouldRender && (
+          <g 
+            transform={`translate(${markerX}, ${markerY})`} 
+            className={`pointer-events-none transition-opacity duration-500 ease-in-out 
+              ${isVisible ? "opacity-100" : "opacity-0"}`}
+          >
+            <circle r="20" fill={markerColor} className="animate-pulse" />
+            <circle r="10" fill={markerColor} />
+          </g>
+        )}
       </g>
     </a>
   );

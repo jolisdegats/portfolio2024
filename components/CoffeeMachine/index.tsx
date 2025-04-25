@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
-import useSound from 'use-sound';
+
 import coffeeMachineOnOff from '@/assets/sounds/coffee-machine-on-off.mp3';
 import coffeePouring from '@/assets/sounds/coffee-pouring.mp3';
 import coffeePouringEnd from '@/assets/sounds/coffee-pouring-end.mp3';
 import mugServed from '@/assets/sounds/mug-served.mp3';
 import Mug from './Mug';
+import { useSoundEffect } from '@/lib/hooks/useSoundEffect';
 
 export interface HandleStateChange {
   gameState: GameState;
@@ -33,10 +34,10 @@ interface ResetGameParams {
 const CoffeeMachine = forwardRef<CoffeeMachineRef, CoffeeMachineProps>(({ handleStateChange, hideControls = false }, ref) => {
   const coffeeRef = useRef<HTMLDivElement>(null);
   const mugRef = useRef<HTMLDivElement>(null);
-  const [playCoffeeMachineOnOff] = useSound(coffeeMachineOnOff);
-  const [playCoffeePouring, { stop: stopCoffeePouringSound }] = useSound(coffeePouring);
-  const [playCoffeePouringEnd] = useSound(coffeePouringEnd);
-  const [playMugServed] = useSound(mugServed);
+  const {play: playCoffeeMachineOnOff} = useSoundEffect(coffeeMachineOnOff);
+  const {play: playCoffeePouring, stop: stopCoffeePouringSound} = useSoundEffect(coffeePouring);
+  const {play: playCoffeePouringEnd} = useSoundEffect(coffeePouringEnd);
+  const {play: playMugServed} = useSoundEffect(mugServed);
 
   const [gameState, setGameState] = useState<GameState>('OFF');
   const [objective, setObjective] = useState(0);

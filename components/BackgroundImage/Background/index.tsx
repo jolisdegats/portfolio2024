@@ -23,8 +23,9 @@ const Background = ({onLoad}: {onLoad: (isLoading: boolean) => void}) => {
     <div className='z-[-10] absolute top-0 left-0 w-full h-full'>
       <Image priority src={sky} alt="sky" fill className='object-cover'/>
       <Image priority src={sea} alt="sea" fill className='object-cover'/>
+      <Image priority src={seaclouds} alt="seaclouds" fill className='object-cover'/>
       <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
-        <motion.image
+        {/* <motion.image
           href={seaclouds.src}
           width="100%"
           height="100%"
@@ -37,7 +38,7 @@ const Background = ({onLoad}: {onLoad: (isLoading: boolean) => void}) => {
             ease: 'linear',
             repeat: Infinity,
           }}
-        />
+        /> */}
         <motion.image
           href={seaclouds.src}
           width="100%"
